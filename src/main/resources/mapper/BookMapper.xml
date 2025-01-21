@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.bookapp.infra.mapper.BookMapper">
+
+    <select id="findAllBooks" resultType="com.example.bookapp.domain.entity.Book">
+        SELECT * FROM books
+    </select>
+
+    <insert id="insertBook">
+        INSERT INTO
+        books (title, published_date)
+        VALUES
+        (#{title}, #{publishedDate})
+    </insert>
+
+    <select id="findById" parameterType="int">
+        SELECT * FROM books WHERE id = #{id}
+    </select>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM books WHERE id = #{id}
+    </delete>
+
+    <update id="borrowBook" parameterType="int">
+        UPDATE books SET status = 'BORROWED' WHERE id = #{id}
+    </update>
+
+    <update id="returnBook" parameterType="int">
+        UPDATE books SET status = 'AVAIlABLE' WHERE id = #{id}
+    </update>
+</mapper>
