@@ -28,4 +28,8 @@
     <update id="returnBook" parameterType="int">
         UPDATE books SET status = 'AVAIlABLE' WHERE id = #{id}
     </update>
+
+    <select id="findStatusById" parameterType="int">
+        SELECT status FROM books WHERE id = #{id}
+    </select>
 </mapper>

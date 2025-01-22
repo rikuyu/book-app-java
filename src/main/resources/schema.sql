@@ -34,4 +34,4 @@ CREATE TABLE IF NOT EXISTS borrow_records (
 
 -- INSERT INTO users (name, email) VALUES ('Yumi', 'yumi@email.com');
 -- INSERT INTO books (title, published_date) VALUES ('Java Spring Boot Guide', '2023-01-20');
--- INSERT INTO borrow_records (id, user_id, book_id, borrowed_date) VALUES (3, 3, '2023-04-15');
+-- INSERT INTO borrow_records (user_id, book_id, borrowed_date) VALUES (3, 3, '2023-04-15');

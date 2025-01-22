@@ -1,6 +1,7 @@
 package com.example.bookapp.infra.mapper;
 
 import com.example.bookapp.domain.entity.Book;
+import com.example.bookapp.domain.entity.Status;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public interface BookMapper {
     void insertBook(Book book);
 
     Book findById(int id);
+
+    Status findStatusById(int id);
 
     void deleteById(int id);
 

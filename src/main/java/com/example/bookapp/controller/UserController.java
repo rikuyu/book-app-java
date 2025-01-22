@@ -52,6 +52,10 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable int id) {
-        service.deleteById(id);
+        if(service.deleteById(id)) {
+            System.out.println("success");
+        } else {
+            System.out.println("fail");
+        }
     }
 }

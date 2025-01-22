@@ -41,6 +41,10 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public void deleteBookById(@PathVariable int id) {
-        service.deleteById(id);
+        if (service.deleteById(id)) {
+            System.out.println("success");
+        } else {
+            System.out.println("fail");
+        }
     }
 }

@@ -1,35 +1,59 @@
 package com.example.bookapp.domain.service;
 
 import com.example.bookapp.domain.entity.BorrowRecord;
+import com.example.bookapp.domain.entity.Status;
+import com.example.bookapp.infra.mapper.BookMapper;
 import com.example.bookapp.infra.mapper.BorrowRecordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class BorrowRecordService {
 
-    private final BorrowRecordMapper mapper;
+    private final BorrowRecordMapper borrowRecordMapper;
+    private final BookMapper bookMapper;
 
     @Autowired
-    public BorrowRecordService(BorrowRecordMapper mapper) {
-        this.mapper = mapper;
+    public BorrowRecordService(
+            BorrowRecordMapper borrowRecordMapper,
+            BookMapper bookMapper
+    ) {
+        this.borrowRecordMapper = borrowRecordMapper;
+        this.bookMapper = bookMapper;
     }
 
     public List<BorrowRecord> findAllBorrowRecords() {
-        return mapper.findAllBorrowRecords();
-    }
-
-    public void insertBorrowRecord(BorrowRecord borrowRecord) {
-        mapper.insertBorrowRecord(borrowRecord);
+        return borrowRecordMapper.findAllBorrowRecords();
     }
 
     public List<BorrowRecord> findByUserId(int userId) {
-        return mapper.findByUserId(userId);
+        return borrowRecordMapper.findByUserId(userId);
     }
 
     public List<BorrowRecord> findByBookId(int bookId) {
-        return mapper.findByBookId(bookId);
+        return borrowRecordMapper.findByBookId(bookId);
+    }
+
+    @Transactional
+    public boolean insertBorrowRecordIfAvailable(BorrowRecord borrowRecord) {
+        boolean isBookAvailable = bookMapper.findStatusById(borrowRecord.bookId) == Status.AVAIlABLE;
+
+        if (!isBookAvailable) {
+            return false;
+        }
+
+        bookMapper.borrowBook(borrowRecord.bookId);
+        borrowRecordMapper.insertBorrowRecord(borrowRecord);
+        return true;
+    }
+
+    @Transactional
+    public boolean returnBook(int borrowRecordId, int bookId) {
+        borrowRecordMapper.updateBorrowRecord(borrowRecordId);
+        bookMapper.returnBook(bookId);
+        return true;
     }
 }

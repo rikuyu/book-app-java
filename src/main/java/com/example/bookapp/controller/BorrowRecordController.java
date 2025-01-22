@@ -4,14 +4,14 @@ import com.example.bookapp.domain.entity.BorrowRecord;
 import com.example.bookapp.domain.service.BorrowRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -41,14 +41,23 @@ public class BorrowRecordController {
     }
 
     @PostMapping()
-    public void borrowBook() {
-
+    public void borrowBook(@RequestBody BorrowRecord body) {
+        var isSuccess = service.insertBorrowRecordIfAvailable(body);
+        if (isSuccess) {
+            System.out.println("success");
+        } else {
+            System.out.println("failure");
+        }
     }
 
-    @PutMapping("/return")
-    public void returnBook() {
-        LocalDate today = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = today.format(formatter);
+    @PutMapping("/{borrow_record_id}/book/{book_id}")
+    public void returnBook(@PathVariable("borrow_record_id") int borrowRecordId, @PathVariable("book_id") int bookId) {
+        var isSuccess = service.returnBook(borrowRecordId, bookId);
+
+        if (isSuccess) {
+            System.out.println("success");
+        } else {
+            System.out.println("failure");
+        }
     }
 }
