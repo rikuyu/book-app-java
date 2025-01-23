@@ -2,7 +2,10 @@ package com.example.bookapp.controller;
 
 import com.example.bookapp.domain.entity.Book;
 import com.example.bookapp.domain.service.BookService;
+import com.example.bookapp.utils.BadRequestException;
+import com.example.bookapp.utils.InternalServerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,26 +28,50 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> getBook() {
-        return service.findAllBooks();
+    public ResponseEntity<List<Book>> getBook() {
+        try {
+            return ResponseEntity.ok(service.findAllBooks());
+        } catch (Exception e) {
+            throw new InternalServerException("something went wrong", e);
+        }
     }
 
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable int id) {
-        return service.findById(id);
+    public ResponseEntity<Book> getBookById(@PathVariable int id) {
+        if (id <= 0) {
+            throw new BadRequestException("id must be greater than 0");
+        }
+
+        try {
+            return ResponseEntity.ok(service.findById(id));
+        } catch (Exception e) {
+            throw new InternalServerException("something went wrong", e);
+        }
     }
 
     @PostMapping()
-    public void addBook(@RequestBody Book book) {
-        service.insertBook(book);
+    public ResponseEntity<String> addBook(@RequestBody Book book) {
+        if (book == null) {
+            throw new BadRequestException("book is null");
+        }
+        try {
+            service.insertBook(book);
+            return ResponseEntity.ok("book inserted");
+        } catch (Exception e) {
+            throw new InternalServerException("something went wrong", e);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBookById(@PathVariable int id) {
-        if (service.deleteById(id)) {
-            System.out.println("success");
-        } else {
-            System.out.println("fail");
+    public ResponseEntity<String> deleteBookById(@PathVariable int id) {
+        if (id <= 0) {
+            throw new BadRequestException("id must be greater than 0");
+        }
+        try {
+            service.deleteById(id);
+            return ResponseEntity.ok("book deleted");
+        } catch (Exception e) {
+            throw new InternalServerException("something went wrong", e);
         }
     }
 }

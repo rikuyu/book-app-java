@@ -51,9 +51,8 @@ public class BorrowRecordService {
     }
 
     @Transactional
-    public boolean returnBook(int borrowRecordId, int bookId) {
+    public void returnBook(int borrowRecordId, int bookId) {
         borrowRecordMapper.updateBorrowRecord(borrowRecordId);
         bookMapper.returnBook(bookId);
-        return true;
     }
 }

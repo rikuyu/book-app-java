@@ -2,7 +2,10 @@ package com.example.bookapp.controller;
 
 import com.example.bookapp.domain.entity.BorrowRecord;
 import com.example.bookapp.domain.service.BorrowRecordService;
+import com.example.bookapp.utils.BadRequestException;
+import com.example.bookapp.utils.InternalServerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,38 +29,76 @@ public class BorrowRecordController {
     }
 
     @GetMapping
-    public List<BorrowRecord> getBorrowRecord() {
-        return service.findAllBorrowRecords();
+    public ResponseEntity<List<BorrowRecord>> getBorrowRecord() {
+        try {
+            return ResponseEntity.ok().body(service.findAllBorrowRecords());
+        } catch (Exception e) {
+            throw new InternalServerException("something went wrong", e);
+        }
     }
 
     @GetMapping("/user")
-    public List<BorrowRecord> getBookRecordsByUserId(@RequestParam("id") int userId) {
-        return service.findByUserId(userId);
+    public ResponseEntity<List<BorrowRecord>> getBookRecordsByUserId(@RequestParam("id") int userId) {
+        if (userId <= 0) {
+            throw new BadRequestException("id must be greater than 0");
+        }
+
+        try {
+            return ResponseEntity.ok().body(service.findByUserId(userId));
+        } catch (Exception e) {
+            throw new InternalServerException("something went wrong", e);
+        }
     }
 
     @GetMapping("/book")
-    public List<BorrowRecord> getBookRecordsByBookId(@RequestParam("id") int bookId) {
-        return service.findByBookId(bookId);
+    public ResponseEntity<List<BorrowRecord>> getBookRecordsByBookId(@RequestParam("id") int bookId) {
+        if (bookId <= 0) {
+            throw new BadRequestException("id must be greater than 0");
+        }
+
+        try {
+            return ResponseEntity.ok().body(service.findByBookId(bookId));
+        } catch (Exception e) {
+            throw new InternalServerException("something went wrong", e);
+        }
     }
 
     @PostMapping()
-    public void borrowBook(@RequestBody BorrowRecord body) {
-        var isSuccess = service.insertBorrowRecordIfAvailable(body);
-        if (isSuccess) {
-            System.out.println("success");
-        } else {
-            System.out.println("failure");
+    public ResponseEntity<String> borrowBook(@RequestBody BorrowRecord body) {
+        if (body == null) {
+            throw new BadRequestException("book is null");
+        }
+        try {
+            if (service.insertBorrowRecordIfAvailable(body)) {
+                return ResponseEntity.ok("book borrowed successfully");
+            } else {
+                throw new InternalServerException("book isn't available");
+            }
+        } catch (InternalServerException e) {
+            throw new InternalServerException(e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerException("something went wrong", e);
         }
     }
 
     @PutMapping("/{borrow_record_id}/book/{book_id}")
-    public void returnBook(@PathVariable("borrow_record_id") int borrowRecordId, @PathVariable("book_id") int bookId) {
-        var isSuccess = service.returnBook(borrowRecordId, bookId);
+    public ResponseEntity<String> returnBook(
+            @PathVariable("borrow_record_id") int borrowRecordId,
+            @PathVariable("book_id") int bookId
+    ) {
+        if (bookId <= 0) {
+            throw new BadRequestException("book id must be greater than 0");
+        }
 
-        if (isSuccess) {
-            System.out.println("success");
-        } else {
-            System.out.println("failure");
+        if (borrowRecordId <= 0) {
+            throw new BadRequestException("borrow record id must be greater than 0");
+        }
+
+        try {
+            service.returnBook(borrowRecordId, bookId);
+            return ResponseEntity.ok("book returned successfully");
+        } catch (Exception e) {
+            throw new InternalServerException("something went wrong", e);
         }
     }
 }
