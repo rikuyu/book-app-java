@@ -37,10 +37,10 @@ public class BookService {
     }
 
     @Transactional
-    public void deleteById(int id) {
+    public int deleteById(int id) {
         if (borrowRecordMapper.findByBookId(id).isEmpty()) {
             borrowRecordMapper.deleteBorrowRecordByBookId(id);
         }
-        bookMapper.deleteById(id);
+        return bookMapper.deleteById(id);
     }
 }

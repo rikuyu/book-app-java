@@ -17,7 +17,7 @@ public interface BookMapper {
 
     Status findStatusById(int id);
 
-    void deleteById(int id);
+    int deleteById(int id);
 
     void borrowBook(int id);
 

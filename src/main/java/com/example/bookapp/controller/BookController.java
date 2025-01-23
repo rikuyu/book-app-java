@@ -56,7 +56,7 @@ public class BookController {
         }
         try {
             service.insertBook(book);
-            return ResponseEntity.ok("book inserted");
+            return ResponseEntity.ok("book inserted successfully");
         } catch (Exception e) {
             throw new InternalServerException("something went wrong", e);
         }
@@ -68,8 +68,11 @@ public class BookController {
             throw new BadRequestException("id must be greater than 0");
         }
         try {
-            service.deleteById(id);
-            return ResponseEntity.ok("book deleted");
+            int affectedRows = service.deleteById(id);
+            if (affectedRows == 0) {
+                throw new InternalServerException("book not found");
+            }
+            return ResponseEntity.ok("book deleted successfully");
         } catch (Exception e) {
             throw new InternalServerException("something went wrong", e);
         }

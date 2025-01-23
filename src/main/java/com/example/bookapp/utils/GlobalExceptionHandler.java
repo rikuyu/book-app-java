@@ -11,7 +11,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
-        public ResponseEntity<Map<String, String>> handleNoBodyException(BadRequestException ex) {
+    public ResponseEntity<Map<String, String>> handleException(BadRequestException ex) {
         Map<String, String> response = new HashMap<>();
         response.put("error", ex.getMessage());
 
@@ -19,9 +19,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InternalServerException.class)
-    public ResponseEntity<Map<String, String>> handleServerException(InternalServerException ex) {
+    public ResponseEntity<Map<String, String>> handleException(InternalServerException ex) {
         Map<String, String> response = new HashMap<>();
+
         response.put("error", ex.getMessage());
+
+        if (ex.getCause() != null) {
+            response.put("cause", ex.getCause().getMessage());
+        }
 
         return ResponseEntity.internalServerError().body(response);
     }

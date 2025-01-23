@@ -7,10 +7,7 @@
     </select>
 
     <insert id="insertBook">
-        INSERT INTO
-        books (title, published_date)
-        VALUES
-        (#{title}, #{publishedDate})
+        INSERT INTO books (title) VALUES (#{title})
     </insert>
 
     <select id="findById" parameterType="int">

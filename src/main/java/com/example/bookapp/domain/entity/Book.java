@@ -1,17 +1,20 @@
 package com.example.bookapp.domain.entity;
 
-import java.util.Date;
-
 public class Book {
     public Integer id;
     public String title;
-    public Date publishedDate;
-    public Status status;
+    public Status status = Status.AVAIlABLE;
 
-    public Book(Integer id, String title, Date publishedDate, Status status) {
+    public Book() {
+    }
+
+    public Book(String title) {
+        this.title = title;
+    }
+
+    public Book(Integer id, String title, Status status) {
         this.id = id;
         this.title = title;
-        this.publishedDate = publishedDate;
         this.status = status;
     }
 }
