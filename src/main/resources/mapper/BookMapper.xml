@@ -15,7 +15,7 @@
     </select>
 
     <delete id="deleteById" parameterType="int">
-        DELETE FROM books WHERE id = #{id}
+        DELETE FROM books WHERE id = #{id} AND status != 'BORROWED'
     </delete>
 
     <update id="borrowBook" parameterType="int">

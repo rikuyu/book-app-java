@@ -51,9 +51,6 @@ public class BookController {
 
     @PostMapping()
     public ResponseEntity<String> addBook(@RequestBody Book book) {
-        if (book == null) {
-            throw new BadRequestException("book is null");
-        }
         try {
             service.insertBook(book);
             return ResponseEntity.ok("book inserted successfully");
@@ -70,7 +67,7 @@ public class BookController {
         try {
             int affectedRows = service.deleteById(id);
             if (affectedRows == 0) {
-                throw new InternalServerException("book not found");
+                throw new InternalServerException("book is not exist or book is borrowed");
             }
             return ResponseEntity.ok("book deleted successfully");
         } catch (Exception e) {

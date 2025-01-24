@@ -1,5 +1,3 @@
-SET time_zone = '+09:00';
-
 INSERT INTO users (name, email) VALUES ('Sakura', 'sakura@email.com');
 INSERT INTO books (title) VALUES ('Ruby on Rails Test Book');
 INSERT INTO borrow_records (user_id, book_id, borrowed_date) VALUES (1, 1, Now());
