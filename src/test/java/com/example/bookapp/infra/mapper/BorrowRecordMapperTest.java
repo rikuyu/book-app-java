@@ -2,7 +2,6 @@ package com.example.bookapp.infra.mapper;
 
 import com.example.bookapp.domain.entity.Book;
 import com.example.bookapp.domain.entity.BorrowRecord;
-import com.example.bookapp.domain.entity.Status;
 import com.example.bookapp.domain.entity.User;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -63,15 +62,13 @@ class BorrowRecordMapperTest {
 
     @Test
     void insertBorrowRecord() {
-        var userId = 4;
-        var bookId = 4;
-        var newBook = new Book(bookId, "Test Book", new Date(), Status.AVAIlABLE);
-        var newUser = new User(userId, "Takashi", "takashi@gmail.com");
+        var newBook = new Book("Test Book");
+        var newUser = new User("Takashi", "takashi@gmail.com");
 
         bookMapper.insertBook(newBook);
         userMapper.insert(newUser);
 
-        var borrowRecord = new BorrowRecord(4, userId, bookId, new Date(), null);
+        var borrowRecord = new BorrowRecord(4, 4, 4, new Date(), null);
         borrowRecordMapper.insertBorrowRecord(borrowRecord);
 
         var borrowRecords = borrowRecordMapper.findAllBorrowRecords();
@@ -79,8 +76,8 @@ class BorrowRecordMapperTest {
 
         assertEquals(borrowRecords.size(), 4);
         assertEquals(lastBorrowRecord.id, 4);
-        assertEquals(lastBorrowRecord.userId, userId);
-        assertEquals(lastBorrowRecord.bookId, bookId);
+        assertEquals(lastBorrowRecord.userId, 4);
+        assertEquals(lastBorrowRecord.bookId, 4);
         assertEquals(lastBorrowRecord.returnedDate, null);
     }
 

@@ -36,20 +36,8 @@ public class UserService {
         userMapper.insert(user);
     }
 
-    public void updateEmail(User user) {
-        userMapper.updateEmail(user);
-    }
-
-    public void updateName(User user) {
-        userMapper.updateName(user);
-    }
-
     @Transactional
-    public boolean deleteById(int id) {
-        if (borrowRecordMapper.findByUserId(id).isEmpty()) {
-            borrowRecordMapper.deleteBorrowRecordByUserId(id);
-        }
-        userMapper.deleteById(id);
-        return true;
+    public int deleteById(int id) {
+        return userMapper.deleteById(id);
     }
 }

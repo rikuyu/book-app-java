@@ -23,12 +23,6 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(User user);
 
-    @Update("UPDATE users SET email = #{email} WHERE id = #{id}")
-    void updateEmail(User user);
-
-    @Update("UPDATE users SET name = #{name} WHERE id = #{id}")
-    void updateName(User user);
-
     @Delete("DELETE FROM users WHERE id = #{id}")
-    void deleteById(int id);
+    int deleteById(int id);
 }

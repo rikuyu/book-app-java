@@ -47,34 +47,6 @@ public class UserController {
         }
     }
 
-    @PutMapping("/name")
-    public ResponseEntity<String> updateUserName(@RequestBody User user) {
-        if (user == null) {
-            throw new BadRequestException("user is null");
-        }
-
-        try {
-            service.updateName(user);
-            return ResponseEntity.ok("user's name updated successfully");
-        } catch (Exception e) {
-            throw new InternalServerException("something went wrong", e);
-        }
-    }
-
-    @PutMapping("/email")
-    public ResponseEntity<String> updateUserEmail(@RequestBody User user) {
-        if (user == null) {
-            throw new BadRequestException("user is null");
-        }
-
-        try {
-            service.updateEmail(user);
-            return ResponseEntity.ok("user's email updated successfully");
-        } catch (Exception e) {
-            throw new InternalServerException("something went wrong", e);
-        }
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable int id) {
         if (id <= 0) {
@@ -95,7 +67,10 @@ public class UserController {
         }
 
         try {
-            service.deleteById(id);
+            int affectedRows =  service.deleteById(id);
+            if (affectedRows == 0) {
+                throw new InternalServerException("user not found");
+            }
             return ResponseEntity.ok("user deleted successfully");
         } catch (Exception e) {
             throw new InternalServerException("something went wrong", e);

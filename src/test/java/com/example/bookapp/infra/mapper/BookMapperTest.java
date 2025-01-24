@@ -7,7 +7,6 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +32,7 @@ class BookMapperTest {
 
     @Test
     void insertBook() {
-        Book newBook = new Book(4, "Test Book", new Date(), Status.AVAIlABLE);
+        Book newBook = new Book("Test Book");
         mapper.insertBook(newBook);
 
         List<Book> books = mapper.findAllBooks();

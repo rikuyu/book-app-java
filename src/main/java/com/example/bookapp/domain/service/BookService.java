@@ -38,9 +38,6 @@ public class BookService {
 
     @Transactional
     public int deleteById(int id) {
-        if (borrowRecordMapper.findByBookId(id).isEmpty()) {
-            borrowRecordMapper.deleteBorrowRecordByBookId(id);
-        }
         return bookMapper.deleteById(id);
     }
 }
