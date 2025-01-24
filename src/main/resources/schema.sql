@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS borrow_records (
     id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
     user_id INTEGER,
     book_id INTEGER,
-    borrowed_date DATE NOT NULL,
-    returned_date DATE,
+    borrowed_date DATETIME NOT NULL,
+    returned_date DATETIME,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
 );
