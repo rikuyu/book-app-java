@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/book")
 public class BookController {
 
     private final BookService service;

@@ -1,8 +1,7 @@
 package com.example.bookapp.controller;
 
-import com.example.bookapp.domain.entity.Book;
-import com.example.bookapp.domain.entity.Status;
-import com.example.bookapp.domain.service.BookService;
+import com.example.bookapp.domain.entity.User;
+import com.example.bookapp.domain.service.UserService;
 import com.example.bookapp.infra.mapper.BookMapper;
 import com.example.bookapp.infra.mapper.BorrowRecordMapper;
 import com.example.bookapp.infra.mapper.UserMapper;
@@ -26,14 +25,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(BookController.class)
-class BookControllerTest {
+@WebMvcTest(UserController.class)
+class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
-    private BookService service;
+    private UserService service;
 
     @MockitoBean
     private BookMapper bookMapper;
@@ -44,69 +43,75 @@ class BookControllerTest {
     @MockitoBean
     private UserMapper userMapper;
 
-    Book mockBook1 = new Book(1, "book1", Status.AVAIlABLE);
-    Book mockBook2 = new Book(2, "book2", Status.AVAIlABLE);
+    private final User mockUser1 = new User(1, "user1", "user1@email.com");
+    private final User mockUser2 = new User(2, "user2", "user2@email.com");
 
     @Test
-    void getBook() throws Exception {
-        when(service.findAllBooks()).thenReturn(Arrays.asList(mockBook1, mockBook2));
-        mockMvc.perform(get("/book"))
+    void getAllUsers() throws Exception {
+        when(service.findAllUsers()).thenReturn(Arrays.asList(mockUser1, mockUser2));
+        mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         [
                             {
                                 "id": 1,
-                                "title": "book1",
-                                "status": "AVAIlABLE"
+                                "name": "user1",
+                                "email": "user1@email.com"
                             },
                             {
                                 "id": 2,
-                                "title": "book2",
-                                "status": "AVAIlABLE"
+                                "name": "user2",
+                                "email": "user2@email.com"
                             }
                         ]
                         """
                 ));
-        verify(service, times(1)).findAllBooks();
+        verify(service, times(1)).findAllUsers();
     }
 
     @Test
-    void getBookById() throws Exception {
-        when(service.findById(1)).thenReturn(mockBook1);
-        mockMvc.perform(get("/book/{id}", 1))
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {
-                            "id": 1,
-                            "title": "book1",
-                            "status": "AVAIlABLE"
-                        }
-                        """
-                ));
-        verify(service, times(1)).findById(1);
-    }
+    void createUser() throws Exception {
+        doNothing().when(service).insert(any());
 
-    @Test
-    void addBook() throws Exception {
-        doNothing().when(service).insertBook(any());
         var requestBody = """
                 {
-                    "title": "test"
+                    "name": "user1",
+                    "email": "user1@email.com"
                 }
                 """;
 
         mockMvc.perform(
-                post("/book")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody)
-        ).andExpect(status().isOk());
-        verify(service, times(1)).insertBook(any());
+                        post("/user")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody)
+                )
+                .andExpect(status().isOk());
+
+        verify(service, times(1)).insert(any());
     }
 
     @Test
-    void deleteBookById() throws Exception {
+    void getUserById() throws Exception {
+        when(service.findById(1)).thenReturn(mockUser1);
+        mockMvc.perform(get("/user/{id}", 1))
+                .andExpect(status().isOk())
+                .andExpect(
+                        content().json("""
+                                {
+                                        "id": 1,
+                                        "name": "user1",
+                                        "email": "user1@email.com"
+                                    }
+                                """
+                        )
+                );
+        verify(service, times(1)).findById(1);
+    }
+
+    @Test
+    void deleteUserById() throws Exception {
         when(service.deleteById(1)).thenReturn(1);
-        mockMvc.perform(delete("/book/{id}", 1)).andExpect(status().isOk());
+        mockMvc.perform(delete("/user/{id}", 1)).andExpect(status().isOk());
         verify(service, times(1)).deleteById(1);
     }
 }
