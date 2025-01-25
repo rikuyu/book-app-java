@@ -14,6 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +39,7 @@ class UserServiceTest {
         assertEquals(mockUsers.size(), users.size());
         assertEquals(mockUser1.name, users.get(0).name);
 
-        verify(mapper).findAllUsers();
+        verify(mapper, times(1)).findAllUsers();
     }
 
     @Test
@@ -49,14 +50,14 @@ class UserServiceTest {
         assertEquals(mockUser1.name, user.name);
         assertEquals(mockUser1.email, user.email);
 
-        verify(mapper).findById(1);
+        verify(mapper, times(1)).findById(1);
     }
 
     @Test
     void insert() {
         doNothing().when(mapper).insert(any());
         service.insert(mockUser1);
-        verify(mapper).insert(any());
+        verify(mapper, times(1)).insert(any());
     }
 
     @Test
@@ -64,6 +65,6 @@ class UserServiceTest {
         when(mapper.deleteById(1)).thenReturn(1);
         int affectedRows = service.deleteById(1);
         assertEquals(1, affectedRows);
-        verify(mapper).deleteById(1);
+        verify(mapper, times(1)).deleteById(1);
     }
 }

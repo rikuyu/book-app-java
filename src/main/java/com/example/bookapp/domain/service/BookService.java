@@ -2,7 +2,6 @@ package com.example.bookapp.domain.service;
 
 import com.example.bookapp.domain.entity.Book;
 import com.example.bookapp.infra.mapper.BookMapper;
-import com.example.bookapp.infra.mapper.BorrowRecordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -17,6 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +44,7 @@ class BorrowRecordServiceTest {
         assertEquals(mockBorrowRecords.size(), borrowRecords.size());
         assertEquals(mockBorrowRecords.get(0).userId, borrowRecords.get(0).userId);
 
-        verify(borrowRecordMapper).findAllBorrowRecords();
+        verify(borrowRecordMapper, times(1)).findAllBorrowRecords();
     }
 
     @Test
@@ -53,7 +54,7 @@ class BorrowRecordServiceTest {
 
         assertEquals(Collections.singletonList(mockBorrowRecord1).size(), borrowRecords.size());
         assertEquals(mockBorrowRecord1.userId, borrowRecords.get(0).userId);
-        verify(borrowRecordMapper).findByUserId(1);
+        verify(borrowRecordMapper, times(1)).findByUserId(1);
     }
 
     @Test
@@ -63,7 +64,7 @@ class BorrowRecordServiceTest {
 
         assertEquals(Collections.singletonList(mockBorrowRecord1).size(), borrowRecords.size());
         assertEquals(mockBorrowRecord1.userId, borrowRecords.get(0).userId);
-        verify(borrowRecordMapper).findByBookId(1);
+        verify(borrowRecordMapper, times(1)).findByBookId(1);
     }
 
     @Test
@@ -76,7 +77,7 @@ class BorrowRecordServiceTest {
 
         verify(bookMapper).findStatusById(1);
         verify(bookMapper).borrowBook(mockBorrowRecord1.bookId);
-        verify(borrowRecordMapper).insertBorrowRecord(mockBorrowRecord1);
+        verify(borrowRecordMapper, times(1)).insertBorrowRecord(mockBorrowRecord1);
     }
 
     @Test
@@ -86,7 +87,7 @@ class BorrowRecordServiceTest {
 
         assertTrue(service.returnBook(1, 1));
 
-        verify(bookMapper).returnBook(1);
-        verify(borrowRecordMapper).updateBorrowRecord(1, 1);
+        verify(bookMapper, times(1)).returnBook(1);
+        verify(borrowRecordMapper, times(1)).updateBorrowRecord(1, 1);
     }
 }

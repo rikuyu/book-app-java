@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,14 +38,14 @@ class BookServiceTest {
         assertEquals(mockBooks.size(), books.size());
         assertEquals(mockBooks.get(0).title, books.get(0).title);
 
-        verify(mapper).findAllBooks();
+        verify(mapper, times(1)).findAllBooks();
     }
 
     @Test
     void insertBook() {
         doNothing().when(mapper).insertBook(mockBook1);
         service.insertBook(mockBook1);
-        verify(mapper).insertBook(mockBook1);
+        verify(mapper, times(1)).insertBook(mockBook1);
     }
 
     @Test
@@ -54,7 +55,7 @@ class BookServiceTest {
 
         assertEquals(mockBook1.title, book.title);
 
-        verify(mapper).findById(1);
+        verify(mapper, times(1)).findById(1);
     }
 
     @Test
@@ -62,6 +63,6 @@ class BookServiceTest {
         when(mapper.deleteById(1)).thenReturn(1);
         int affectedRows = service.deleteById(1);
         assertEquals(1, affectedRows);
-        verify(mapper).deleteById(1);
+        verify(mapper, times(1)).deleteById(1);
     }
 }
