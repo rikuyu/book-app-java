@@ -65,9 +65,6 @@ public class BorrowRecordController {
 
     @PostMapping()
     public ResponseEntity<String> borrowBook(@RequestBody BorrowRecord body) {
-        if (body == null) {
-            throw new BadRequestException("book is null");
-        }
         try {
             if (service.insertBorrowRecordIfAvailable(body)) {
                 return ResponseEntity.ok("book borrowed successfully");
@@ -95,7 +92,9 @@ public class BorrowRecordController {
         }
 
         try {
-            service.returnBook(borrowRecordId, bookId);
+            if (!service.returnBook(borrowRecordId, bookId)) {
+                throw new InternalServerException("book record not found");
+            }
             return ResponseEntity.ok("book returned successfully");
         } catch (Exception e) {
             throw new InternalServerException("something went wrong", e);

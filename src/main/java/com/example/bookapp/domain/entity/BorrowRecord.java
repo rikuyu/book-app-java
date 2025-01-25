@@ -1,5 +1,8 @@
 package com.example.bookapp.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class BorrowRecord {
@@ -9,17 +12,16 @@ public class BorrowRecord {
     public Date borrowedDate;
     public Date returnedDate;
 
+    @JsonCreator
     public BorrowRecord(
-            Integer id,
-            Integer userId,
-            Integer bookId,
-            Date borrowedDate,
-            Date returnedDate
+            @JsonProperty("user_id") Integer userId,
+            @JsonProperty("book_id") Integer bookId
     ) {
-        this.id = id;
         this.userId = userId;
         this.bookId = bookId;
-        this.borrowedDate = borrowedDate;
-        this.returnedDate = returnedDate;
+    }
+
+    public void setBorrowedDate() {
+        this.borrowedDate = new Date();
     }
 }

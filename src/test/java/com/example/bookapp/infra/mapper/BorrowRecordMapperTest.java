@@ -8,10 +8,9 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
-import java.util.Date;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @MybatisTest
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -29,11 +28,11 @@ class BorrowRecordMapperTest {
         var borrowRecords = borrowRecordMapper.findAllBorrowRecords();
         var firstBorrowRecord = borrowRecords.get(0);
 
-        assertEquals(borrowRecords.size(), 3);
-        assertEquals(firstBorrowRecord.id, 1);
-        assertEquals(firstBorrowRecord.userId, 1);
-        assertEquals(firstBorrowRecord.bookId, 1);
-        assertEquals(firstBorrowRecord.returnedDate, null);
+        assertEquals(3, borrowRecords.size());
+        assertEquals(1, firstBorrowRecord.id);
+        assertEquals(1, firstBorrowRecord.userId);
+        assertEquals(1, firstBorrowRecord.bookId);
+        assertNull(firstBorrowRecord.returnedDate);
     }
 
     @Test
@@ -41,11 +40,11 @@ class BorrowRecordMapperTest {
         var borrowRecords = borrowRecordMapper.findByUserId(1);
         var firstBorrowRecord = borrowRecords.get(0);
 
-        assertEquals(borrowRecords.size(), 1);
-        assertEquals(firstBorrowRecord.id, 1);
-        assertEquals(firstBorrowRecord.userId, 1);
-        assertEquals(firstBorrowRecord.bookId, 1);
-        assertEquals(firstBorrowRecord.returnedDate, null);
+        assertEquals(1, borrowRecords.size());
+        assertEquals(1, firstBorrowRecord.id);
+        assertEquals(1, firstBorrowRecord.userId);
+        assertEquals(1, firstBorrowRecord.bookId);
+        assertNull(firstBorrowRecord.returnedDate);
     }
 
     @Test
@@ -53,11 +52,11 @@ class BorrowRecordMapperTest {
         var borrowRecords = borrowRecordMapper.findByBookId(1);
         var firstBorrowRecord = borrowRecords.get(0);
 
-        assertEquals(borrowRecords.size(), 1);
-        assertEquals(firstBorrowRecord.id, 1);
-        assertEquals(firstBorrowRecord.userId, 1);
-        assertEquals(firstBorrowRecord.bookId, 1);
-        assertEquals(firstBorrowRecord.returnedDate, null);
+        assertEquals(1, borrowRecords.size());
+        assertEquals(1, firstBorrowRecord.id);
+        assertEquals(1, firstBorrowRecord.userId);
+        assertEquals(1, firstBorrowRecord.bookId);
+        assertNull(firstBorrowRecord.returnedDate);
     }
 
     @Test
@@ -68,41 +67,49 @@ class BorrowRecordMapperTest {
         bookMapper.insertBook(newBook);
         userMapper.insert(newUser);
 
-        var borrowRecord = new BorrowRecord(4, 4, 4, new Date(), null);
+        var borrowRecord = new BorrowRecord(4, 4);
+        borrowRecord.setBorrowedDate();
         borrowRecordMapper.insertBorrowRecord(borrowRecord);
 
         var borrowRecords = borrowRecordMapper.findAllBorrowRecords();
         var lastBorrowRecord = borrowRecords.get(3);
 
-        assertEquals(borrowRecords.size(), 4);
-        assertEquals(lastBorrowRecord.id, 4);
-        assertEquals(lastBorrowRecord.userId, 4);
-        assertEquals(lastBorrowRecord.bookId, 4);
-        assertEquals(lastBorrowRecord.returnedDate, null);
+        assertEquals(4, borrowRecords.size());
+        assertEquals(4, lastBorrowRecord.id);
+        assertEquals(4, lastBorrowRecord.userId);
+        assertEquals(4, lastBorrowRecord.bookId);
+        assertNull(lastBorrowRecord.returnedDate);
     }
 
     @Test
     void updateBorrowRecord() {
         var id = 1;
         var beforeBorrowRecord = borrowRecordMapper.findByBookId(id).get(0);
-        assertEquals(beforeBorrowRecord.returnedDate, null);
+        assertNull(beforeBorrowRecord.returnedDate);
 
-        borrowRecordMapper.updateBorrowRecord(id);
         var afterBorrowRecord = borrowRecordMapper.findByBookId(id).get(0);
+
+        assertEquals(1, borrowRecordMapper.updateBorrowRecord(id, id));
         assertNotNull(afterBorrowRecord.returnedDate);
     }
 
     @Test
     void deleteBorrowRecordByBookId() {
+        var beforeBorrowRecords = borrowRecordMapper.findAllBorrowRecords();
+        assertEquals(3, beforeBorrowRecords.size());
+
         borrowRecordMapper.deleteBorrowRecordByBookId(1);
-        var borrowRecords = borrowRecordMapper.findAllBorrowRecords();
-        assertEquals(borrowRecords.size(), 2);
+        var afterBorrowRecords = borrowRecordMapper.findAllBorrowRecords();
+        assertEquals(2, afterBorrowRecords.size());
     }
 
     @Test
     void deleteBorrowRecordByUserId() {
+        var beforeBorrowRecords = borrowRecordMapper.findAllBorrowRecords();
+        assertEquals(3, beforeBorrowRecords.size());
+
         borrowRecordMapper.deleteBorrowRecordByUserId(1);
-        var borrowRecords = borrowRecordMapper.findAllBorrowRecords();
-        assertEquals(borrowRecords.size(), 2);
+        var afterBorrowRecords = borrowRecordMapper.findAllBorrowRecords();
+        assertEquals(2, afterBorrowRecords.size());
     }
 }

@@ -24,10 +24,10 @@ class BookMapperTest {
         List<Book> books = mapper.findAllBooks();
         Book firstBook = books.get(0);
 
-        assertEquals(books.size(), 3);
-        assertEquals(firstBook.id, 1);
-        assertEquals(firstBook.title, "Ruby on Rails Test Book");
-        assertEquals(firstBook.status, Status.AVAIlABLE);
+        assertEquals(3, books.size());
+        assertEquals(1, firstBook.id);
+        assertEquals("Ruby on Rails Test Book", firstBook.title);
+        assertEquals(Status.AVAIlABLE, firstBook.status);
     }
 
     @Test
@@ -38,23 +38,23 @@ class BookMapperTest {
         List<Book> books = mapper.findAllBooks();
         var insertedBook = books.get(3);
 
-        assertEquals(books.size(), 4);
-        assertEquals(insertedBook.id, 4);
-        assertEquals(insertedBook.title, "Test Book");
+        assertEquals(4, books.size());
+        assertEquals(4, insertedBook.id);
+        assertEquals("Test Book", insertedBook.title);
     }
 
     @Test
     void findById() {
         Book book = mapper.findById(2);
 
-        assertEquals(book.id, 2);
-        assertEquals(book.title, "Golang Web Server Tutorial");
+        assertEquals(2, book.id);
+        assertEquals("Golang Web Server Tutorial", book.title);
     }
 
     @Test
     void findStatusById() {
         Status status = mapper.findStatusById(3);
-        assertEquals(status, Status.AVAIlABLE);
+        assertEquals(Status.AVAIlABLE, status);
     }
 
     @Test
@@ -64,29 +64,29 @@ class BookMapperTest {
         List<Book> books = mapper.findAllBooks();
         Book firstBook = books.get(0);
 
-        assertEquals(books.size(), 2);
-        assertEquals(firstBook.id, 2);
+        assertEquals(2, books.size());
+        assertEquals(2, firstBook.id);
     }
 
     @Test
     void borrowBook() {
         var beforeBook = mapper.findById(1);
-        assertEquals(beforeBook.status, Status.AVAIlABLE);
+        assertEquals(Status.AVAIlABLE, beforeBook.status);
 
         mapper.borrowBook(1);
 
         var afterBook = mapper.findById(1);
-        assertEquals(afterBook.status, Status.BORROWED);
+        assertEquals(Status.BORROWED, afterBook.status);
     }
 
     @Test
     void returnBook() {
         mapper.borrowBook(2);
         var beforeBook = mapper.findById(2);
-        assertEquals(beforeBook.status, Status.BORROWED);
+        assertEquals(Status.BORROWED, beforeBook.status);
 
         mapper.returnBook(2);
         var afterBook = mapper.findById(2);
-        assertEquals(afterBook.status, Status.AVAIlABLE);
+        assertEquals(Status.AVAIlABLE, afterBook.status);
     }
 }

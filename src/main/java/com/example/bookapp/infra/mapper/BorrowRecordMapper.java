@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -30,8 +31,8 @@ public interface BorrowRecordMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertBorrowRecord(BorrowRecord borrowRecord);
 
-    @Insert("UPDATE borrow_records SET returned_date = NOW() WHERE id = #{borrowRecordId}")
-    void updateBorrowRecord(int borrowRecordId);
+    @Update("UPDATE borrow_records SET returned_date = NOW() WHERE id = #{borrowRecordId} AND book_id = #{bookId} AND returned_date IS NULL")
+    int updateBorrowRecord(int borrowRecordId, int bookId);
 
     @Delete("DELETE FROM borrow_records WHERE book_id = #{bookId}")
     void deleteBorrowRecordByBookId(int bookId);
