@@ -46,13 +46,18 @@ public class BorrowRecordService {
         }
 
         bookMapper.borrowBook(borrowRecord.bookId);
+        borrowRecord.setBorrowedDate();
         borrowRecordMapper.insertBorrowRecord(borrowRecord);
         return true;
     }
 
     @Transactional
-    public void returnBook(int borrowRecordId, int bookId) {
-        borrowRecordMapper.updateBorrowRecord(borrowRecordId);
+    public boolean returnBook(int borrowRecordId, int bookId) {
+        int affectedRows = borrowRecordMapper.updateBorrowRecord(borrowRecordId, bookId);
+        if (affectedRows == 0) {
+            return false;
+        }
         bookMapper.returnBook(bookId);
+        return true;
     }
 }

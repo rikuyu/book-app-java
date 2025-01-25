@@ -13,15 +13,10 @@ import java.util.List;
 public class BookService {
 
     private final BookMapper bookMapper;
-    private final BorrowRecordMapper borrowRecordMapper;
 
     @Autowired
-    public BookService(
-            BookMapper bookMapper,
-            BorrowRecordMapper borrowRecordMapper
-    ) {
+    public BookService(BookMapper bookMapper) {
         this.bookMapper = bookMapper;
-        this.borrowRecordMapper = borrowRecordMapper;
     }
 
     public List<Book> findAllBooks() {
