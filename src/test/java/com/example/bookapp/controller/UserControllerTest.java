@@ -1,16 +1,9 @@
 package com.example.bookapp.controller;
 
 import com.example.bookapp.domain.entity.User;
-import com.example.bookapp.domain.service.UserService;
-import com.example.bookapp.infra.mapper.BookMapper;
-import com.example.bookapp.infra.mapper.BorrowRecordMapper;
-import com.example.bookapp.infra.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 
@@ -26,29 +19,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
-class UserControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockitoBean
-    private UserService service;
-
-    @MockitoBean
-    private BookMapper bookMapper;
-
-    @MockitoBean
-    private BorrowRecordMapper borrowRecordMapper;
-
-    @MockitoBean
-    private UserMapper userMapper;
+class UserControllerTest extends ControllerTestBase {
 
     private final User mockUser1 = new User(1, "user1", "user1@email.com");
     private final User mockUser2 = new User(2, "user2", "user2@email.com");
 
     @Test
     void getAllUsers() throws Exception {
-        when(service.findAllUsers()).thenReturn(Arrays.asList(mockUser1, mockUser2));
+        when(userService.findAllUsers()).thenReturn(Arrays.asList(mockUser1, mockUser2));
         mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -66,12 +44,12 @@ class UserControllerTest {
                         ]
                         """
                 ));
-        verify(service, times(1)).findAllUsers();
+        verify(userService, times(1)).findAllUsers();
     }
 
     @Test
     void createUser() throws Exception {
-        doNothing().when(service).insert(any());
+        doNothing().when(userService).insert(any());
 
         var requestBody = """
                 {
@@ -87,12 +65,12 @@ class UserControllerTest {
                 )
                 .andExpect(status().isNoContent());
 
-        verify(service, times(1)).insert(any());
+        verify(userService, times(1)).insert(any());
     }
 
     @Test
     void getUserById() throws Exception {
-        when(service.findById(1)).thenReturn(mockUser1);
+        when(userService.findById(1)).thenReturn(mockUser1);
         mockMvc.perform(get("/user/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(
@@ -105,13 +83,13 @@ class UserControllerTest {
                                 """
                         )
                 );
-        verify(service, times(1)).findById(1);
+        verify(userService, times(1)).findById(1);
     }
 
     @Test
     void deleteUserById() throws Exception {
-        when(service.deleteById(1)).thenReturn(1);
+        when(userService.deleteById(1)).thenReturn(1);
         mockMvc.perform(delete("/user/{id}", 1)).andExpect(status().isNoContent());
-        verify(service, times(1)).deleteById(1);
+        verify(userService, times(1)).deleteById(1);
     }
 }

@@ -2,16 +2,9 @@ package com.example.bookapp.controller;
 
 import com.example.bookapp.domain.entity.Book;
 import com.example.bookapp.domain.entity.Status;
-import com.example.bookapp.domain.service.BookService;
-import com.example.bookapp.infra.mapper.BookMapper;
-import com.example.bookapp.infra.mapper.BorrowRecordMapper;
-import com.example.bookapp.infra.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 
@@ -27,29 +20,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(BookController.class)
-class BookControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockitoBean
-    private BookService service;
-
-    @MockitoBean
-    private BookMapper bookMapper;
-
-    @MockitoBean
-    private BorrowRecordMapper borrowRecordMapper;
-
-    @MockitoBean
-    private UserMapper userMapper;
+class BookControllerTest extends ControllerTestBase {
 
     Book mockBook1 = new Book(1, "book1", Status.AVAIlABLE);
     Book mockBook2 = new Book(2, "book2", Status.AVAIlABLE);
 
     @Test
     void getBook() throws Exception {
-        when(service.findAllBooks()).thenReturn(Arrays.asList(mockBook1, mockBook2));
+        when(bookService.findAllBooks()).thenReturn(Arrays.asList(mockBook1, mockBook2));
         mockMvc.perform(get("/book"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -67,12 +45,12 @@ class BookControllerTest {
                         ]
                         """
                 ));
-        verify(service, times(1)).findAllBooks();
+        verify(bookService, times(1)).findAllBooks();
     }
 
     @Test
     void getBookById() throws Exception {
-        when(service.findById(1)).thenReturn(mockBook1);
+        when(bookService.findById(1)).thenReturn(mockBook1);
         mockMvc.perform(get("/book/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -83,12 +61,12 @@ class BookControllerTest {
                         }
                         """
                 ));
-        verify(service, times(1)).findById(1);
+        verify(bookService, times(1)).findById(1);
     }
 
     @Test
     void addBook() throws Exception {
-        doNothing().when(service).insertBook(any());
+        doNothing().when(bookService).insertBook(any());
         var requestBody = """
                 {
                     "title": "test"
@@ -100,13 +78,13 @@ class BookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
         ).andExpect(status().isNoContent());
-        verify(service, times(1)).insertBook(any());
+        verify(bookService, times(1)).insertBook(any());
     }
 
     @Test
     void deleteBookById() throws Exception {
-        when(service.deleteById(1)).thenReturn(1);
+        when(bookService.deleteById(1)).thenReturn(1);
         mockMvc.perform(delete("/book/{id}", 1)).andExpect(status().isNoContent());
-        verify(service, times(1)).deleteById(1);
+        verify(bookService, times(1)).deleteById(1);
     }
 }

@@ -1,16 +1,9 @@
 package com.example.bookapp.controller;
 
 import com.example.bookapp.domain.entity.BorrowRecord;
-import com.example.bookapp.domain.service.BorrowRecordService;
-import com.example.bookapp.infra.mapper.BookMapper;
-import com.example.bookapp.infra.mapper.BorrowRecordMapper;
-import com.example.bookapp.infra.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,29 +19,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(BorrowRecordController.class)
-class BorrowRecordControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockitoBean
-    private BorrowRecordService service;
-
-    @MockitoBean
-    private BookMapper bookMapper;
-
-    @MockitoBean
-    private BorrowRecordMapper borrowRecordMapper;
-
-    @MockitoBean
-    private UserMapper userMapper;
+class BorrowRecordControllerTest extends ControllerTestBase {
 
     BorrowRecord mockBorrowRecord1 = new BorrowRecord(1, 1, 1, null, null);
     BorrowRecord mockBorrowRecord2 = new BorrowRecord(2, 2, 2, null, null);
 
     @Test
     void getBorrowRecord() throws Exception {
-        when(service.findAllBorrowRecords()).thenReturn(Arrays.asList(mockBorrowRecord1, mockBorrowRecord2));
+        when(borrowRecordService.findAllBorrowRecords()).thenReturn(Arrays.asList(mockBorrowRecord1, mockBorrowRecord2));
         mockMvc.perform(get("/borrow_record"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -70,12 +48,12 @@ class BorrowRecordControllerTest {
                                 ]
                         """));
 
-        verify(service, times(1)).findAllBorrowRecords();
+        verify(borrowRecordService, times(1)).findAllBorrowRecords();
     }
 
     @Test
     void getBookRecordsByUserId() throws Exception {
-        when(service.findByUserId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
+        when(borrowRecordService.findByUserId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
         mockMvc.perform(get("/borrow_record/user").param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -89,12 +67,12 @@ class BorrowRecordControllerTest {
                                     }
                                 ]
                         """));
-        verify(service, times(1)).findByUserId(1);
+        verify(borrowRecordService, times(1)).findByUserId(1);
     }
 
     @Test
     void getBookRecordsByBookId() throws Exception {
-        when(service.findByBookId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
+        when(borrowRecordService.findByBookId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
         mockMvc.perform(get("/borrow_record/book").param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -108,12 +86,12 @@ class BorrowRecordControllerTest {
                                     }
                                 ]
                         """));
-        verify(service, times(1)).findByBookId(1);
+        verify(borrowRecordService, times(1)).findByBookId(1);
     }
 
     @Test
     void borrowBook() throws Exception {
-        when(service.insertBorrowRecordIfAvailable(any())).thenReturn(true);
+        when(borrowRecordService.insertBorrowRecordIfAvailable(any())).thenReturn(true);
 
         var requestBody = """
                 {
@@ -128,26 +106,26 @@ class BorrowRecordControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isNoContent());
 
-        verify(service, times(1)).insertBorrowRecordIfAvailable(any());
+        verify(borrowRecordService, times(1)).insertBorrowRecordIfAvailable(any());
     }
 
     @Test
     void returnBook_success() throws Exception {
-        when(service.returnBook(1, 1)).thenReturn(true);
+        when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
                 put("/borrow_record/{borrow_record}/book/{book_id}", 1, 1)
         ).andExpect(status().isNoContent());
 
-        verify(service, times(1)).returnBook(1, 1);
+        verify(borrowRecordService, times(1)).returnBook(1, 1);
     }
 
     @Test
     void returnBook_fail_bookId() throws Exception {
-        when(service.returnBook(1, 1)).thenReturn(true);
+        when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
                 put("/borrow_record/{borrow_record}/book/{book_id}", 0, 1)
         ).andExpect(status().isBadRequest());
 
-        verify(service, times(0)).returnBook(0, 1);
+        verify(borrowRecordService, times(0)).returnBook(0, 1);
     }
 }
