@@ -85,7 +85,7 @@ class UserControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(requestBody)
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(service, times(1)).insert(any());
     }
@@ -111,7 +111,7 @@ class UserControllerTest {
     @Test
     void deleteUserById() throws Exception {
         when(service.deleteById(1)).thenReturn(1);
-        mockMvc.perform(delete("/user/{id}", 1)).andExpect(status().isOk());
+        mockMvc.perform(delete("/user/{id}", 1)).andExpect(status().isNoContent());
         verify(service, times(1)).deleteById(1);
     }
 }

@@ -50,17 +50,17 @@ public class BookController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> addBook(@RequestBody Book book) {
+    public ResponseEntity<Void> addBook(@RequestBody Book book) {
         try {
             service.insertBook(book);
-            return ResponseEntity.ok("book inserted successfully");
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             throw new InternalServerException("something went wrong", e);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBookById(@PathVariable int id) {
+    public ResponseEntity<Void> deleteBookById(@PathVariable int id) {
         if (id <= 0) {
             throw new BadRequestException("id must be greater than 0");
         }
@@ -69,7 +69,7 @@ public class BookController {
             if (affectedRows == 0) {
                 throw new InternalServerException("book is not exist or book is borrowed");
             }
-            return ResponseEntity.ok("book deleted successfully");
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             throw new InternalServerException("something went wrong", e);
         }

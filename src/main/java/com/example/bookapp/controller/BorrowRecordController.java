@@ -64,10 +64,10 @@ public class BorrowRecordController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> borrowBook(@RequestBody BorrowRecord body) {
+    public ResponseEntity<Void> borrowBook(@RequestBody BorrowRecord body) {
         try {
             if (service.insertBorrowRecordIfAvailable(body)) {
-                return ResponseEntity.ok("book borrowed successfully");
+                return ResponseEntity.noContent().build();
             } else {
                 throw new InternalServerException("book isn't available");
             }
@@ -79,7 +79,7 @@ public class BorrowRecordController {
     }
 
     @PutMapping("/{borrow_record_id}/book/{book_id}")
-    public ResponseEntity<String> returnBook(
+    public ResponseEntity<Void> returnBook(
             @PathVariable("borrow_record_id") int borrowRecordId,
             @PathVariable("book_id") int bookId
     ) {
@@ -95,7 +95,7 @@ public class BorrowRecordController {
             if (!service.returnBook(borrowRecordId, bookId)) {
                 throw new InternalServerException("book record not found");
             }
-            return ResponseEntity.ok("book returned successfully");
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             throw new InternalServerException("something went wrong", e);
         }

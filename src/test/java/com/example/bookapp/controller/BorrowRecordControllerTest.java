@@ -126,7 +126,7 @@ class BorrowRecordControllerTest {
                 post("/borrow_record")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isNoContent());
 
         verify(service, times(1)).insertBorrowRecordIfAvailable(any());
     }
@@ -136,7 +136,7 @@ class BorrowRecordControllerTest {
         when(service.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
                 put("/borrow_record/{borrow_record}/book/{book_id}", 1, 1)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isNoContent());
 
         verify(service, times(1)).returnBook(1, 1);
     }

@@ -99,14 +99,14 @@ class BookControllerTest {
                 post("/book")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isNoContent());
         verify(service, times(1)).insertBook(any());
     }
 
     @Test
     void deleteBookById() throws Exception {
         when(service.deleteById(1)).thenReturn(1);
-        mockMvc.perform(delete("/book/{id}", 1)).andExpect(status().isOk());
+        mockMvc.perform(delete("/book/{id}", 1)).andExpect(status().isNoContent());
         verify(service, times(1)).deleteById(1);
     }
 }

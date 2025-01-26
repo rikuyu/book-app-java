@@ -38,10 +38,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody User user) {
+    public ResponseEntity<Void> createUser(@RequestBody User user) {
         try {
             service.insert(user);
-            return ResponseEntity.ok("user created successfully");
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             throw new InternalServerException("something went wrong", e);
         }
@@ -61,7 +61,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable int id) {
+    public ResponseEntity<Void> deleteUserById(@PathVariable int id) {
         if (id <= 0) {
             throw new BadRequestException("id must be greater than 0");
         }
@@ -71,7 +71,7 @@ public class UserController {
             if (affectedRows == 0) {
                 throw new InternalServerException("user not found");
             }
-            return ResponseEntity.ok("user deleted successfully");
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             throw new InternalServerException("something went wrong", e);
         }
