@@ -92,24 +92,4 @@ class BorrowRecordMapperTest {
         assertEquals(1, borrowRecordMapper.updateBorrowRecord(id, id));
         assertNotNull(afterBorrowRecord.returnedDate);
     }
-
-    @Test
-    void deleteBorrowRecordByBookId() {
-        var beforeBorrowRecords = borrowRecordMapper.findAllBorrowRecords();
-        assertEquals(3, beforeBorrowRecords.size());
-
-        borrowRecordMapper.deleteBorrowRecordByBookId(1);
-        var afterBorrowRecords = borrowRecordMapper.findAllBorrowRecords();
-        assertEquals(2, afterBorrowRecords.size());
-    }
-
-    @Test
-    void deleteBorrowRecordByUserId() {
-        var beforeBorrowRecords = borrowRecordMapper.findAllBorrowRecords();
-        assertEquals(3, beforeBorrowRecords.size());
-
-        borrowRecordMapper.deleteBorrowRecordByUserId(1);
-        var afterBorrowRecords = borrowRecordMapper.findAllBorrowRecords();
-        assertEquals(2, afterBorrowRecords.size());
-    }
 }

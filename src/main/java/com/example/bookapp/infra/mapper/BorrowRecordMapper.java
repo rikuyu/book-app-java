@@ -33,10 +33,4 @@ public interface BorrowRecordMapper {
 
     @Update("UPDATE borrow_records SET returned_date = NOW() WHERE id = #{borrowRecordId} AND book_id = #{bookId} AND returned_date IS NULL")
     int updateBorrowRecord(int borrowRecordId, int bookId);
-
-    @Delete("DELETE FROM borrow_records WHERE book_id = #{bookId}")
-    void deleteBorrowRecordByBookId(int bookId);
-
-    @Delete("DELETE FROM borrow_records WHERE user_id = #{userId}")
-    void deleteBorrowRecordByUserId(int userId);
 }
