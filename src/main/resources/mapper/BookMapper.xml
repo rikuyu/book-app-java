@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.bookapp.infra.mapper.BookMapper">
 
-    <select id="findAllBooks" resultType="com.example.bookapp.domain.entity.Book">
+    <select id="findAllBooks">
         SELECT * FROM books
     </select>
 
@@ -10,23 +10,48 @@
         INSERT INTO books (title) VALUES (#{title})
     </insert>
 
-    <select id="findById" parameterType="int">
+    <select id="findById">
         SELECT * FROM books WHERE id = #{id}
     </select>
 
-    <delete id="deleteById" parameterType="int">
+    <delete id="deleteById">
         DELETE FROM books WHERE id = #{id} AND status != 'BORROWED'
     </delete>
 
-    <update id="borrowBook" parameterType="int">
+    <update id="borrowBook">
         UPDATE books SET status = 'BORROWED' WHERE id = #{id}
     </update>
 
-    <update id="returnBook" parameterType="int">
+    <update id="returnBook">
         UPDATE books SET status = 'AVAIlABLE' WHERE id = #{id}
     </update>
 
-    <select id="findStatusById" parameterType="int">
+    <select id="findStatusById">
         SELECT status FROM books WHERE id = #{id}
+    </select>
+
+    <select id="search">
+        SELECT * FROM books WHERE title LIKE CONCAT('%', #{String}, '%')
+    </select>
+
+    <select id="getPopularBooks">
+        SELECT
+            b.*
+        FROM
+            books b
+        JOIN
+            (
+                SELECT
+                    book_id
+                FROM
+                    borrow_records
+                GROUP BY
+                    book_id
+                ORDER BY
+                    COUNT(*) DESC
+                LIMIT 5
+            ) br
+        ON
+            b.id = br.book_id;
     </select>
 </mapper>

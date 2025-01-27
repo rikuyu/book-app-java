@@ -22,4 +22,8 @@ public interface BookMapper {
     void borrowBook(int id);
 
     void returnBook(int id);
+
+    List<Book> search(String keyword);
+
+    List<Book> getPopularBooks();
 }

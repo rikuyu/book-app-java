@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -72,6 +73,29 @@ public class BookController {
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             throw new InternalServerException("something went wrong", e);
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Book>> searchBorrowRecords(
+            @RequestParam String keyword
+    ) {
+        if (keyword == null || keyword.isEmpty()) {
+            throw new BadRequestException("keyword is null or empty");
+        }
+        try {
+            return ResponseEntity.ok(service.search(keyword));
+        } catch (Exception e) {
+            throw new InternalServerException("something went wrong", e);
+        }
+    }
+
+    @GetMapping("/popular")
+    public ResponseEntity<List<Book>> getPopularBooks() {
+        try {
+            return ResponseEntity.ok(service.getPopularBooks());
+        } catch (Exception e) {
+            throw new InternalServerException(e);
         }
     }
 }

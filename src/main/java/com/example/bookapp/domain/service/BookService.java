@@ -34,4 +34,12 @@ public class BookService {
     public int deleteById(int id) {
         return bookMapper.deleteById(id);
     }
+
+    public List<Book> search(String keyword) {
+        return bookMapper.search(keyword);
+    }
+
+    public List<Book> getPopularBooks() {
+        return bookMapper.getPopularBooks();
+    }
 }
