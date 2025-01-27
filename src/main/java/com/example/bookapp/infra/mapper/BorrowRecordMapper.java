@@ -1,7 +1,6 @@
 package com.example.bookapp.infra.mapper;
 
 import com.example.bookapp.domain.entity.BorrowRecord;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -31,6 +30,18 @@ public interface BorrowRecordMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertBorrowRecord(BorrowRecord borrowRecord);
 
-    @Update("UPDATE borrow_records SET returned_date = NOW() WHERE id = #{borrowRecordId} AND book_id = #{bookId} AND returned_date IS NULL")
+    @Update("""
+            UPDATE
+                borrow_records
+            SET 
+                returned_date = NOW()
+            WHERE 
+                id = #{borrowRecordId} 
+            AND 
+                book_id = #{bookId} 
+            AND 
+                returned_date 
+            IS NULL
+            """)
     int updateBorrowRecord(int borrowRecordId, int bookId);
 }
