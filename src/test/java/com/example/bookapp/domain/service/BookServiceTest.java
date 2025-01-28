@@ -31,7 +31,7 @@ class BookServiceTest {
     List<Book> mockBooks = Arrays.asList(mockBook1, mockBook2);
 
     @Test
-    void findAllBooks() {
+    void findAllBooks_success() {
         when(mapper.findAllBooks()).thenReturn(mockBooks);
         List<Book> books = service.findAllBooks();
 
@@ -42,14 +42,14 @@ class BookServiceTest {
     }
 
     @Test
-    void insertBook() {
+    void insertBook_success() {
         doNothing().when(mapper).insertBook(mockBook1);
         service.insertBook(mockBook1);
         verify(mapper, times(1)).insertBook(mockBook1);
     }
 
     @Test
-    void findById() {
+    void findById_success() {
         when(mapper.findById(1)).thenReturn(mockBook1);
         var book = service.findById(1);
 
@@ -59,10 +59,29 @@ class BookServiceTest {
     }
 
     @Test
-    void deleteById() {
+    void deleteById_success() {
         when(mapper.deleteById(1)).thenReturn(1);
         int affectedRows = service.deleteById(1);
         assertEquals(1, affectedRows);
         verify(mapper, times(1)).deleteById(1);
+    }
+
+    @Test
+    void search_success() {
+        var keyword = "ok1";
+        when(mapper.search(keyword)).thenReturn(Arrays.asList(mockBook1));
+        var books = service.search(keyword);
+
+        assertEquals(mockBook1.title, books.get(0).title);
+        verify(mapper, times(1)).search(keyword);
+    }
+
+    @Test
+    void getPopularBooks_success() {
+        when(mapper.getPopularBooks()).thenReturn(mockBooks);
+        var popularBooks = service.getPopularBooks();
+
+        assertEquals(mockBooks.size(), popularBooks.size());
+        verify(mapper, times(1)).getPopularBooks();
     }
 }

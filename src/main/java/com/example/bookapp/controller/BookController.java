@@ -77,7 +77,7 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Book>> searchBorrowRecords(
+    public ResponseEntity<List<Book>> searchBooks(
             @RequestParam String keyword
     ) {
         if (keyword == null || keyword.isEmpty()) {

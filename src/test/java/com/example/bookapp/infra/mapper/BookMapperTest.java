@@ -10,6 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MybatisTest
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -20,7 +21,7 @@ class BookMapperTest {
 
 
     @Test
-    void findAllBooks() {
+    void findAllBooks_success() {
         List<Book> books = mapper.findAllBooks();
         Book firstBook = books.get(0);
 
@@ -31,7 +32,7 @@ class BookMapperTest {
     }
 
     @Test
-    void insertBook() {
+    void insertBook_success() {
         Book newBook = new Book("Test Book");
         mapper.insertBook(newBook);
 
@@ -44,7 +45,7 @@ class BookMapperTest {
     }
 
     @Test
-    void findById() {
+    void findById_success() {
         Book book = mapper.findById(2);
 
         assertEquals(2, book.id);
@@ -52,13 +53,13 @@ class BookMapperTest {
     }
 
     @Test
-    void findStatusById() {
+    void findStatusById_success() {
         Status status = mapper.findStatusById(3);
         assertEquals(Status.AVAIlABLE, status);
     }
 
     @Test
-    void deleteById() {
+    void deleteById_success() {
         mapper.deleteById(1);
 
         List<Book> books = mapper.findAllBooks();
@@ -69,7 +70,7 @@ class BookMapperTest {
     }
 
     @Test
-    void borrowBook() {
+    void borrowBook_success() {
         var beforeBook = mapper.findById(1);
         assertEquals(Status.AVAIlABLE, beforeBook.status);
 
@@ -80,7 +81,7 @@ class BookMapperTest {
     }
 
     @Test
-    void returnBook() {
+    void returnBook_success() {
         mapper.borrowBook(2);
         var beforeBook = mapper.findById(2);
         assertEquals(Status.BORROWED, beforeBook.status);
@@ -88,5 +89,30 @@ class BookMapperTest {
         mapper.returnBook(2);
         var afterBook = mapper.findById(2);
         assertEquals(Status.AVAIlABLE, afterBook.status);
+    }
+
+    @Test
+    void search_success() {
+        var keyword = "Java";
+        var books = mapper.search(keyword);
+
+        assertEquals(1, books.size());
+        assertEquals(3, books.get(0).id);
+        assertTrue(books.get(0).title.contains(keyword));
+    }
+
+    @Test
+    void search_fail() {
+        var keyword = "TypeScript";
+        var books = mapper.search(keyword);
+
+        assertEquals(0, books.size());
+    }
+
+    @Test
+    void getPopularBooks_success() {
+        var popularBooks = mapper.getPopularBooks();
+
+        assertEquals(3, popularBooks.size());
     }
 }

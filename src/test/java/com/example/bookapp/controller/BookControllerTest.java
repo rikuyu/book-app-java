@@ -87,4 +87,47 @@ class BookControllerTest extends ControllerTestBase {
         mockMvc.perform(delete("/book/{id}", 1)).andExpect(status().isNoContent());
         verify(bookService, times(1)).deleteById(1);
     }
+
+    @Test
+    void searchBooks() throws Exception {
+        var keyword = "ok1";
+        when(bookService.search(keyword)).thenReturn(Arrays.asList(mockBook1));
+        mockMvc.perform(get("/book/search").param("keyword", keyword))
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        """
+                                [
+                                    {
+                                        "id": 1,
+                                        "title": "book1",
+                                        "status": "AVAIlABLE"
+                                    }
+                                ]
+                                """
+                ));
+        verify(bookService, times(1)).search(keyword);
+    }
+
+    @Test
+    void getPopularBooks() throws Exception {
+        when(bookService.getPopularBooks()).thenReturn(Arrays.asList(mockBook1, mockBook2));
+        mockMvc.perform(get("/book/popular"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        [
+                            {
+                                "id": 1,
+                                "title": "book1",
+                                "status": "AVAIlABLE"
+                            },
+                            {
+                                "id": 2,
+                                "title": "book2",
+                                "status": "AVAIlABLE"
+                            }
+                        ]
+                        """
+                ));
+        verify(bookService, times(1)).getPopularBooks();
+    }
 }
