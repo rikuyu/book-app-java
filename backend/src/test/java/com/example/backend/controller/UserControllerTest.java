@@ -25,7 +25,7 @@ class UserControllerTest extends ControllerTestBase {
     private final User mockUser2 = new User(2, "user2", "user2@email.com");
 
     @Test
-    void getAllUsers() throws Exception {
+    void getAllUsers_success() throws Exception {
         when(userService.findAllUsers()).thenReturn(Arrays.asList(mockUser1, mockUser2));
         mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())
@@ -48,7 +48,7 @@ class UserControllerTest extends ControllerTestBase {
     }
 
     @Test
-    void createUser() throws Exception {
+    void createUser_success() throws Exception {
         doNothing().when(userService).insert(any());
 
         var requestBody = """
@@ -69,7 +69,7 @@ class UserControllerTest extends ControllerTestBase {
     }
 
     @Test
-    void getUserById() throws Exception {
+    void getUserById_success() throws Exception {
         when(userService.findById(1)).thenReturn(mockUser1);
         mockMvc.perform(get("/user/{id}", 1))
                 .andExpect(status().isOk())
@@ -87,9 +87,25 @@ class UserControllerTest extends ControllerTestBase {
     }
 
     @Test
-    void deleteUserById() throws Exception {
+    void getUserById_fail() throws Exception {
+        when(userService.findById(1)).thenReturn(mockUser1);
+        mockMvc.perform(get("/user/{id}", 0))
+                .andExpect(status().isBadRequest());
+        verify(userService, times(0)).findById(1);
+    }
+
+
+    @Test
+    void deleteUserById_success() throws Exception {
         when(userService.deleteById(1)).thenReturn(1);
         mockMvc.perform(delete("/user/{id}", 1)).andExpect(status().isNoContent());
         verify(userService, times(1)).deleteById(1);
+    }
+
+    @Test
+    void deleteUserById_fail() throws Exception {
+        when(userService.deleteById(1)).thenReturn(1);
+        mockMvc.perform(delete("/user/{id}", 0)).andExpect(status().isBadRequest());
+        verify(userService, times(0)).deleteById(1);
     }
 }
