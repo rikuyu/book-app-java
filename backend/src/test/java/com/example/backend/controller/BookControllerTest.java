@@ -26,7 +26,7 @@ class BookControllerTest extends ControllerTestBase {
     Book mockBook2 = new Book(2, "book2", Status.AVAIlABLE);
 
     @Test
-    void getBook() throws Exception {
+    void getBook_success() throws Exception {
         when(bookService.findAllBooks()).thenReturn(Arrays.asList(mockBook1, mockBook2));
         mockMvc.perform(get("/book"))
                 .andExpect(status().isOk())
@@ -49,7 +49,7 @@ class BookControllerTest extends ControllerTestBase {
     }
 
     @Test
-    void getBookById() throws Exception {
+    void getBookById_success() throws Exception {
         when(bookService.findById(1)).thenReturn(mockBook1);
         mockMvc.perform(get("/book/{id}", 1))
                 .andExpect(status().isOk())
@@ -65,7 +65,15 @@ class BookControllerTest extends ControllerTestBase {
     }
 
     @Test
-    void addBook() throws Exception {
+    void getBookById_fail() throws Exception {
+        when(bookService.findById(1)).thenReturn(mockBook1);
+        mockMvc.perform(get("/book/{id}", 0))
+                .andExpect(status().isBadRequest());
+        verify(bookService, times(0)).findById(1);
+    }
+
+    @Test
+    void addBook_success() throws Exception {
         doNothing().when(bookService).insertBook(any());
         var requestBody = """
                 {
@@ -82,14 +90,21 @@ class BookControllerTest extends ControllerTestBase {
     }
 
     @Test
-    void deleteBookById() throws Exception {
+    void deleteBookById_success() throws Exception {
         when(bookService.deleteById(1)).thenReturn(1);
         mockMvc.perform(delete("/book/{id}", 1)).andExpect(status().isNoContent());
         verify(bookService, times(1)).deleteById(1);
     }
 
     @Test
-    void searchBooks() throws Exception {
+    void deleteBookById_fail() throws Exception {
+        when(bookService.deleteById(1)).thenReturn(1);
+        mockMvc.perform(delete("/book/{id}", 0)).andExpect(status().isBadRequest());
+        verify(bookService, times(0)).deleteById(1);
+    }
+
+    @Test
+    void searchBooks_success() throws Exception {
         var keyword = "ok1";
         when(bookService.search(keyword)).thenReturn(Arrays.asList(mockBook1));
         mockMvc.perform(get("/book/search").param("keyword", keyword))
@@ -109,7 +124,16 @@ class BookControllerTest extends ControllerTestBase {
     }
 
     @Test
-    void getPopularBooks() throws Exception {
+    void searchBooks_fail() throws Exception {
+        var keyword = "";
+        when(bookService.search(keyword)).thenReturn(Arrays.asList(mockBook1));
+        mockMvc.perform(get("/book/search").param("keyword", keyword))
+                .andExpect(status().isBadRequest());
+        verify(bookService, times(0)).search(keyword);
+    }
+
+    @Test
+    void getPopularBooks_success() throws Exception {
         when(bookService.getPopularBooks()).thenReturn(Arrays.asList(mockBook1, mockBook2));
         mockMvc.perform(get("/book/popular"))
                 .andExpect(status().isOk())
