@@ -25,7 +25,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     BorrowRecord mockBorrowRecord2 = new BorrowRecord(2, 2, 2, null, null);
 
     @Test
-    void getBorrowRecord() throws Exception {
+    void getBorrowRecord_success() throws Exception {
         when(borrowRecordService.findAllBorrowRecords()).thenReturn(Arrays.asList(mockBorrowRecord1, mockBorrowRecord2));
         mockMvc.perform(get("/borrow_record"))
                 .andExpect(status().isOk())
@@ -52,7 +52,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     }
 
     @Test
-    void getBookRecordsByUserId() throws Exception {
+    void getBookRecordsByUserId_success() throws Exception {
         when(borrowRecordService.findByUserId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
         mockMvc.perform(get("/borrow_record/user").param("id", "1"))
                 .andExpect(status().isOk())
@@ -71,7 +71,15 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     }
 
     @Test
-    void getBookRecordsByBookId() throws Exception {
+    void getBookRecordsByUserId_fail() throws Exception {
+        when(borrowRecordService.findByUserId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
+        mockMvc.perform(get("/borrow_record/user").param("id", "0"))
+                .andExpect(status().isBadRequest());
+        verify(borrowRecordService, times(0)).findByUserId(1);
+    }
+
+    @Test
+    void getBookRecordsByBookId_success() throws Exception {
         when(borrowRecordService.findByBookId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
         mockMvc.perform(get("/borrow_record/book").param("id", "1"))
                 .andExpect(status().isOk())
@@ -90,7 +98,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     }
 
     @Test
-    void borrowBook() throws Exception {
+    void borrowBook_success() throws Exception {
         when(borrowRecordService.insertBorrowRecordIfAvailable(any())).thenReturn(true);
 
         var requestBody = """
@@ -127,5 +135,15 @@ class BorrowRecordControllerTest extends ControllerTestBase {
         ).andExpect(status().isBadRequest());
 
         verify(borrowRecordService, times(0)).returnBook(0, 1);
+    }
+
+    @Test
+    void returnBook_fail_borrowRecordId() throws Exception {
+        when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
+        mockMvc.perform(
+                put("/borrow_record/{borrow_record}/book/{book_id}", 1, 0)
+        ).andExpect(status().isBadRequest());
+
+        verify(borrowRecordService, times(0)).returnBook(1, 0);
     }
 }
