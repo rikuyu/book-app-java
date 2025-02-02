@@ -90,6 +90,14 @@ class BookControllerTest extends ControllerTestBase {
     }
 
     @Test
+    void addBook_fail() throws Exception {
+        doNothing().when(bookService).insertBook(any());
+        mockMvc.perform(post("/book").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(bookService, times(0)).insertBook(any());
+    }
+
+    @Test
     void deleteBookById_success() throws Exception {
         when(bookService.deleteById(1)).thenReturn(1);
         mockMvc.perform(delete("/book/{id}", 1)).andExpect(status().isNoContent());

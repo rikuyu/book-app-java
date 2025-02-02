@@ -42,7 +42,6 @@ public class BookController {
         if (id <= 0) {
             throw new BadRequestException("id must be greater than 0");
         }
-
         try {
             return ResponseEntity.ok(service.findById(id));
         } catch (Exception e) {
@@ -52,6 +51,9 @@ public class BookController {
 
     @PostMapping()
     public ResponseEntity<Void> addBook(@RequestBody Book book) {
+        if(book == null) {
+            throw new BadRequestException("book must not be null");
+        }
         try {
             service.insertBook(book);
             return ResponseEntity.noContent().build();
