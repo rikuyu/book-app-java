@@ -16,5 +16,8 @@ INSERT INTO books (title, status) VALUES ('Java Tutorial', 'BORROWED');
 INSERT INTO books (title, status) VALUES ('Master of Java', 'BORROWED');
 INSERT INTO books (title) VALUES ('Server Side Architecture');
 
-INSERT INTO borrow_records (user_id, book_id, borrowed_date) VALUES (1, 4, Now());
-INSERT INTO borrow_records (user_id, book_id, borrowed_date) VALUES (2, 5, Now());
+INSERT INTO
+    borrow_records (user_id, book_id, borrowed_date)
+VALUES
+    (1, 4, Now()),
+    (2, 5, Now());
