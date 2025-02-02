@@ -65,6 +65,9 @@ public class BorrowRecordController {
 
     @PostMapping()
     public ResponseEntity<Void> borrowBook(@RequestBody BorrowRecord body) {
+        if (body == null) {
+            throw new BadRequestException("body must not be null");
+        }
         try {
             if (service.insertBorrowRecordIfAvailable(body)) {
                 return ResponseEntity.noContent().build();

@@ -118,6 +118,15 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     }
 
     @Test
+    void borrowBook_fail() throws Exception {
+        when(borrowRecordService.insertBorrowRecordIfAvailable(any())).thenReturn(true);
+        mockMvc.perform(
+                post("/borrow_record").contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest());
+        verify(borrowRecordService, times(0)).insertBorrowRecordIfAvailable(any());
+    }
+
+    @Test
     void returnBook_success() throws Exception {
         when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
