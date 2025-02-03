@@ -4,8 +4,11 @@ import com.example.backend.domain.entity.BorrowRecord;
 import com.example.backend.domain.service.BorrowRecordService;
 import com.example.backend.utils.BadRequestException;
 import com.example.backend.utils.InternalServerException;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/borrow_record")
 public class BorrowRecordController {
@@ -38,11 +42,9 @@ public class BorrowRecordController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<BorrowRecord>> getBookRecordsByUserId(@RequestParam("id") int userId) {
-        if (userId <= 0) {
-            throw new BadRequestException("id must be greater than 0");
-        }
-
+    public ResponseEntity<List<BorrowRecord>> getBookRecordsByUserId(
+            @RequestParam("id") @Positive int userId
+    ) {
         try {
             return ResponseEntity.ok().body(service.findByUserId(userId));
         } catch (Exception e) {
@@ -51,11 +53,9 @@ public class BorrowRecordController {
     }
 
     @GetMapping("/book")
-    public ResponseEntity<List<BorrowRecord>> getBookRecordsByBookId(@RequestParam("id") int bookId) {
-        if (bookId <= 0) {
-            throw new BadRequestException("id must be greater than 0");
-        }
-
+    public ResponseEntity<List<BorrowRecord>> getBookRecordsByBookId(
+            @RequestParam("id") @Positive int bookId
+    ) {
         try {
             return ResponseEntity.ok().body(service.findByBookId(bookId));
         } catch (Exception e) {
@@ -64,10 +64,9 @@ public class BorrowRecordController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> borrowBook(@RequestBody BorrowRecord body) {
-        if (body == null) {
-            throw new BadRequestException("body must not be null");
-        }
+    public ResponseEntity<Void> borrowBook(
+            @RequestBody @NotNull BorrowRecord body
+    ) {
         try {
             if (service.insertBorrowRecordIfAvailable(body)) {
                 return ResponseEntity.noContent().build();
@@ -83,17 +82,9 @@ public class BorrowRecordController {
 
     @PutMapping("/{borrow_record_id}/book/{book_id}")
     public ResponseEntity<Void> returnBook(
-            @PathVariable("borrow_record_id") int borrowRecordId,
-            @PathVariable("book_id") int bookId
+            @PathVariable("borrow_record_id") @Positive int borrowRecordId,
+            @PathVariable("book_id") @Positive int bookId
     ) {
-        if (bookId <= 0) {
-            throw new BadRequestException("book id must be greater than 0");
-        }
-
-        if (borrowRecordId <= 0) {
-            throw new BadRequestException("borrow record id must be greater than 0");
-        }
-
         try {
             if (!service.returnBook(borrowRecordId, bookId)) {
                 throw new InternalServerException("book record not found");

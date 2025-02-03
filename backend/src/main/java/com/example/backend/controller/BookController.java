@@ -2,10 +2,13 @@ package com.example.backend.controller;
 
 import com.example.backend.domain.entity.Book;
 import com.example.backend.domain.service.BookService;
-import com.example.backend.utils.BadRequestException;
 import com.example.backend.utils.InternalServerException;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -38,10 +42,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable int id) {
-        if (id <= 0) {
-            throw new BadRequestException("id must be greater than 0");
-        }
+    public ResponseEntity<Book> getBookById(@PathVariable @Positive int id) {
         try {
             return ResponseEntity.ok(service.findById(id));
         } catch (Exception e) {
@@ -50,10 +51,7 @@ public class BookController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> addBook(@RequestBody Book book) {
-        if(book == null) {
-            throw new BadRequestException("book must not be null");
-        }
+    public ResponseEntity<Void> addBook(@RequestBody @NotNull Book book) {
         try {
             service.insertBook(book);
             return ResponseEntity.noContent().build();
@@ -63,10 +61,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBookById(@PathVariable int id) {
-        if (id <= 0) {
-            throw new BadRequestException("id must be greater than 0");
-        }
+    public ResponseEntity<Void> deleteBookById(@PathVariable @Positive() int id) {
         try {
             int affectedRows = service.deleteById(id);
             if (affectedRows == 0) {
@@ -80,11 +75,8 @@ public class BookController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Book>> searchBooks(
-            @RequestParam String keyword
+            @RequestParam @NotBlank String keyword
     ) {
-        if (keyword == null || keyword.isEmpty()) {
-            throw new BadRequestException("keyword is null or empty");
-        }
         try {
             return ResponseEntity.ok(service.search(keyword));
         } catch (Exception e) {
