@@ -69,6 +69,14 @@ class UserControllerTest extends ControllerTestBase {
     }
 
     @Test
+    void createUser_fail() throws Exception {
+        doNothing().when(userService).insert(any());
+        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+        verify(userService, times(0)).insert(any());
+    }
+
+    @Test
     void getUserById_success() throws Exception {
         when(userService.findById(1)).thenReturn(mockUser1);
         mockMvc.perform(get("/user/{id}", 1))

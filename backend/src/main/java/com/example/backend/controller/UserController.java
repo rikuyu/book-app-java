@@ -38,6 +38,9 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody User user) {
+        if (user == null) {
+            throw new BadRequestException("user is null");
+        }
         try {
             service.insert(user);
             return ResponseEntity.noContent().build();
@@ -66,7 +69,7 @@ public class UserController {
         }
 
         try {
-            int affectedRows =  service.deleteById(id);
+            int affectedRows = service.deleteById(id);
             if (affectedRows == 0) {
                 throw new InternalServerException("user not found");
             }
