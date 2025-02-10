@@ -3,6 +3,7 @@ import {FaSearch} from "react-icons/fa";
 import {IoMenu} from "react-icons/io5";
 import {IoMdSend} from "react-icons/io";
 import {Book} from "./BookTable.tsx";
+import {Link} from "react-router-dom";
 
 const BookSearch: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -12,7 +13,7 @@ const BookSearch: React.FC = () => {
     const toggleMenu = () => setMenuOpen(!menuOpen);
 
     const handleSearch = () => {
-        if(searchText.length == 0) {
+        if (searchText.length == 0) {
             alert("キーワードを入力してください")
         }
 
@@ -41,19 +42,26 @@ const BookSearch: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-100">
             <header className="bg-green-600 text-white py-4 flex justify-between items-center px-5">
-                <h1 className="text-2xl font-medium text-left">図書館の書籍検索</h1>
+                <div className="flex items-center">
+                    <FaSearch className="text-white w-6 h-6 mr-4"/>
+                    <h1 className="text-2xl font-medium text-left">図書館の書籍検索</h1>
+                </div>
                 <div className="relative">
                     <button
                         onClick={toggleMenu}
                         className="p-2 text-white rounded-full focus:outline-none"
                     >
-                        <IoMenu className="text-white mx-3 w-6 h-6"/>
+                        <IoMenu className="text-white mx-3 w-7 h-7"/>
                     </button>
                     {menuOpen && (
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10">
                             <ul className="text-gray-800">
-                                <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">すべての書籍</li>
-                                <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">人気の書籍</li>
+                                <Link to="/book">
+                                    <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">すべての書籍</li>
+                                </Link>
+                                <Link to="/popular">
+                                    <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">人気の書籍</li>
+                                </Link>
                                 <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">マイページ</li>
                                 <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">ログアウト</li>
                             </ul>

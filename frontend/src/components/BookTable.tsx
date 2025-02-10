@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {IoMenu} from "react-icons/io5";
+import {Link} from "react-router-dom";
+import {MdMenuBook} from "react-icons/md";
 
 export type Book = {
     id: number;
@@ -40,19 +42,26 @@ const BookTable: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-100">
             <header className="bg-green-600 text-white py-4 flex justify-between items-center px-5">
-                <h1 className="text-2xl font-medium text-left">図書館の書籍一覧</h1>
+                <div className="flex items-center">
+                    <MdMenuBook className="text-white w-8 h-8 mr-2"/>
+                    <h1 className="text-2xl font-medium text-left">図書館の書籍一覧</h1>
+                </div>
                 <div className="relative">
                     <button
                         onClick={toggleMenu}
                         className="p-2 text-white rounded-full focus:outline-none"
                     >
-                        <IoMenu className="text-white mx-3 w-6 h-6"/>
+                        <IoMenu className="text-white mx-3 w-7 h-7"/>
                     </button>
                     {menuOpen && (
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10">
                             <ul className="text-gray-800">
-                                <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">人気の書籍</li>
-                                <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">書籍の検索</li>
+                                <Link to="/register">
+                                    <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">人気の書籍</li>
+                                </Link>
+                                <Link to="/search">
+                                    <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">書籍の検索</li>
+                                </Link>
                                 <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">マイページ</li>
                                 <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">ログアウト</li>
                             </ul>
