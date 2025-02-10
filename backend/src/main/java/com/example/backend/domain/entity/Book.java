@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public class Book {
     public Integer id;
     public String title;
-    public Status status = Status.AVAIlABLE;
+    public Status status = Status.AVAILABLE;
 
     @JsonCreator
     public Book(String title) {

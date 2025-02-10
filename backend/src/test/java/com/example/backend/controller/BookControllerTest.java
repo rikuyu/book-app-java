@@ -23,8 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BookController.class)
 class BookControllerTest extends ControllerTestBase {
 
-    Book mockBook1 = new Book(1, "book1", Status.AVAIlABLE);
-    Book mockBook2 = new Book(2, "book2", Status.AVAIlABLE);
+    Book mockBook1 = new Book(1, "book1", Status.AVAILABLE);
+    Book mockBook2 = new Book(2, "book2", Status.AVAILABLE);
 
     @Test
     void getBook_success() throws Exception {

@@ -1,10 +1,42 @@
 import React, {useState} from 'react';
-import { FaSearch } from "react-icons/fa";
-import { IoMenu } from "react-icons/io5";
+import {FaSearch} from "react-icons/fa";
+import {IoMenu} from "react-icons/io5";
+import {IoMdSend} from "react-icons/io";
+import {Book} from "./BookTable.tsx";
 
 const BookSearch: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [searchText, setSearchText] = useState('');
+    const [books, setBooks] = useState<Book[]>([]);
+
     const toggleMenu = () => setMenuOpen(!menuOpen);
+
+    const handleSearch = () => {
+        if(searchText.length == 0) {
+            alert("キーワードを入力してください")
+        }
+
+        fetch(`http://localhost:8080/book/search?keyword=${encodeURIComponent(searchText)}`, {
+            method: "GET",
+            credentials: "include",
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then((data: Book[]) => {
+                if (data.length == 0) {
+                    alert("本が見つけられませんでした")
+                } else {
+                    setBooks(data);
+                }
+            })
+            .catch((error) => console.error(error))
+            .finally(() => setSearchText(''));
+    };
+
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -29,15 +61,49 @@ const BookSearch: React.FC = () => {
                     )}
                 </div>
             </header>
-            <div className="px-20 py-4">
+            <div className="px-20 py-6">
                 <div className="flex items-center border border-gray-400 rounded-lg overflow-hidden">
-                    <FaSearch className="text-gray-500 mx-3 w-5 h-5" />
+                    <FaSearch className="text-gray-500 mx-3 w-5 h-5"/>
                     <input
                         type="text"
                         placeholder="書籍を検索..."
                         className="w-full py-4 px-1 focus:outline-none"
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
                     />
+                    <button
+                        onClick={handleSearch}
+                        className="mx-3 bg-green-500 text-white py-2 px-3 rounded-lg flex items-center whitespace-nowrap hover:bg-green-600 focus:outline-none"
+                    >
+                        <IoMdSend className="text-white w-5 h-5 mr-2"/>
+                        検索
+                    </button>
                 </div>
+            </div>
+            <div className="px-20 py-6">
+                <table className="table-auto border-collapse border border-gray-800 w-full">
+                    <thead>
+                    <tr className="bg-gray-200">
+                        <th className="border border-gray-300 px-2 py-3">ID</th>
+                        <th className="border border-gray-300 px-4 py-3">タイトル</th>
+                        <th className="border border-gray-300 px-4 py-3">状態</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {books.map((book) => (
+                        <tr key={book.id}>
+                            <td className="border border-gray-300 px-2 py-2 text-center">{book.id}</td>
+                            <td className="border border-gray-300 px-4 py-2 text-center">{book.title}</td>
+                            <td className="border border-gray-300 px-4 py-2 text-center">
+                              <span
+                                  className={`font-bold ${book.status === 'AVAILABLE' ? 'text-green-600' : 'text-red-600'}`}>
+                                {book.status === 'AVAILABLE' ? '利用可能' : '貸出中'}
+                              </span>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );

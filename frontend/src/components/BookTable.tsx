@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {IoMenu} from "react-icons/io5";
 
 export type Book = {
@@ -7,14 +7,35 @@ export type Book = {
     status: 'AVAILABLE' | 'BORROWED';
 };
 
-type Props = {
-    books: Book[];
-    borrowBook: (id: number) => void;
-};
-
-const BookTable: React.FC<Props> = ({ books, borrowBook }) => {
+const BookTable: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen(!menuOpen);
+    const [books, setBooks] = useState<Book[]>([]);
+
+    useEffect(() => {
+        fetchBooks()
+    }, [])
+
+    const fetchBooks = () => {
+        fetch("http://localhost:8080/book", {
+            method: "GET",
+            credentials: "include",
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then((data: Book[]) => setBooks(data))
+            .catch((error) => {
+                console.error("Error fetching books:", error);
+            });
+    };
+
+    const handleBorrowBook = (id: number) => {
+        alert(`Book ID ${id} を貸し出しました！`);
+    };
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -66,7 +87,7 @@ const BookTable: React.FC<Props> = ({ books, borrowBook }) => {
                                             ? 'bg-green-500 hover:bg-green-600'
                                             : 'bg-gray-400 cursor-not-allowed'
                                     }`}
-                                    onClick={() => borrowBook(book.id)}
+                                    onClick={() => handleBorrowBook(book.id)}
                                     disabled={book.status !== 'AVAILABLE'}
                                 >
                                     貸出

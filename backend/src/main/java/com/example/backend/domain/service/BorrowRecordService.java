@@ -39,7 +39,7 @@ public class BorrowRecordService {
 
     @Transactional
     public boolean insertBorrowRecordIfAvailable(BorrowRecord borrowRecord) {
-        boolean isBookAvailable = bookMapper.findStatusById(borrowRecord.bookId) == Status.AVAIlABLE;
+        boolean isBookAvailable = bookMapper.findStatusById(borrowRecord.bookId) == Status.AVAILABLE;
 
         if (!isBookAvailable) {
             return false;

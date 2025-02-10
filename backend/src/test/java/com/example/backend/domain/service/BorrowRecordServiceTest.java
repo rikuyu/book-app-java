@@ -69,7 +69,7 @@ class BorrowRecordServiceTest {
 
     @Test
     void insertBorrowRecordIfAvailable() {
-        when(bookMapper.findStatusById(1)).thenReturn(Status.AVAIlABLE);
+        when(bookMapper.findStatusById(1)).thenReturn(Status.AVAILABLE);
         doNothing().when(bookMapper).borrowBook(mockBorrowRecord1.bookId);
         doNothing().when(borrowRecordMapper).insertBorrowRecord(mockBorrowRecord1);
 

@@ -27,7 +27,7 @@ class BookMapperTest {
         assertEquals(3, books.size());
         assertEquals(1, firstBook.id);
         assertEquals("Ruby on Rails Test Book", firstBook.title);
-        assertEquals(Status.AVAIlABLE, firstBook.status);
+        assertEquals(Status.AVAILABLE, firstBook.status);
     }
 
     @Test
@@ -55,7 +55,7 @@ class BookMapperTest {
     @Test
     void findStatusById_success() {
         Status status = mapper.findStatusById(3);
-        assertEquals(Status.AVAIlABLE, status);
+        assertEquals(Status.AVAILABLE, status);
     }
 
     @Test
@@ -72,7 +72,7 @@ class BookMapperTest {
     @Test
     void borrowBook_success() {
         var beforeBook = mapper.findById(1);
-        assertEquals(Status.AVAIlABLE, beforeBook.status);
+        assertEquals(Status.AVAILABLE, beforeBook.status);
 
         mapper.borrowBook(1);
 
@@ -88,7 +88,7 @@ class BookMapperTest {
 
         mapper.returnBook(2);
         var afterBook = mapper.findById(2);
-        assertEquals(Status.AVAIlABLE, afterBook.status);
+        assertEquals(Status.AVAILABLE, afterBook.status);
     }
 
     @Test

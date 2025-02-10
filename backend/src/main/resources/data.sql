@@ -11,14 +11,18 @@ VALUES
 INSERT INTO books
     (title, status)
 VALUES
-    ('The Great Gatsby', 'BORROWED'),
-    ('To Kill a Mockingbird', 'BORROWED'),
-    ('1984', 'BORROWED'),
-    ('Pride and Prejudice', 'BORROWED'),
-    ('Moby-Dick', 'AVAILABLE'),
-    ('War and Peace', 'AVAILABLE'),
-    ('The Catcher in the Rye', 'AVAILABLE'),
-    ('Crime and Punishment', 'AVAILABLE');
+    ('吾輩は猫である', 'BORROWED'),
+    ('こころ', 'BORROWED'),
+    ('羅生門', 'BORROWED'),
+    ('ガリバー旅行記', 'BORROWED'),
+    ('走れメロス', 'AVAILABLE'),
+    ('Java入門', 'AVAILABLE'),
+    ('Master of JavaScript', 'AVAILABLE'),
+    ('うらしま太郎の物語', 'AVAILABLE'),
+    ('Javaプログラミング完全ガイド', 'AVAILABLE'),
+    ('Effective Java 第3版', 'AVAILABLE'),
+    ('JavaとSpring Boot入門', 'AVAILABLE'),
+    ('Javaパフォーマンスチューニング', 'AVAILABLE');
 
 INSERT INTO borrow_records
     (user_id, book_id, borrowed_date)
