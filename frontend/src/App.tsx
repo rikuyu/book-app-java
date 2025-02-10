@@ -1,10 +1,15 @@
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+import Login from "./components/Login.tsx";
 
 function App() {
-  return (
-    <>
-      <h1>Vite + React</h1>
-    </>
-  )
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Navigate to="/login" replace/>}/>
+                <Route path="/login" element={<Login/>}/>
+            </Routes>
+        </BrowserRouter>
+    )
 }
 
 export default App

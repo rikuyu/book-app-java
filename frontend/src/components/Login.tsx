@@ -14,16 +14,16 @@ function Login() {
                     placeholder="ユーザーネーム"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-80 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ring-blue-200"
+                    className="w-80 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ring-green-200"
                 />
                 <input
                     type="password"
                     placeholder="パスワード"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-80 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ring-blue-200"
+                    className="w-80 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ring-green-200"
                 />
-                <button className="w-80 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-500 transition">
+                <button className="w-80 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-500 transition">
                     ログイン
                 </button>
 
