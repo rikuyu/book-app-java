@@ -1,5 +1,6 @@
 package com.example.backend.infra.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,15 +26,25 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Value("${app.security.enabled:true}")
+    private boolean securityEnabled;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/session").permitAll()
-                        .anyRequest().authenticated()
-                );
+                .csrf(AbstractHttpConfigurer::disable);
+
+        if (securityEnabled) {
+            http.authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/login", "/register", "/session").permitAll()
+                    .anyRequest().authenticated()
+            );
+        } else {
+            http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+        }
+
         return http.build();
     }
 
