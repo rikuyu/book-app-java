@@ -2,10 +2,8 @@ package com.example.backend.controller;
 
 import com.example.backend.domain.entity.BorrowRecord;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Arrays;
 import java.util.Collections;
