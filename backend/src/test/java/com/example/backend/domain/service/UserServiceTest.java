@@ -27,8 +27,8 @@ class UserServiceTest {
     @Mock
     private UserMapper mapper;
 
-    private final User mockUser1 = new User("user1", "user1@email.com");
-    private final User mockUser2 = new User("user2", "user2@email.com");
+    private final User mockUser1 = new User("user1", "user1@email.com", "pw");
+    private final User mockUser2 = new User("user2", "user2@email.com", "pw");
     private final List<User> mockUsers = Arrays.asList(mockUser1, mockUser2);
 
     @Test

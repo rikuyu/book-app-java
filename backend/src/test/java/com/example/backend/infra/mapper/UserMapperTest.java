@@ -37,7 +37,7 @@ class UserMapperTest {
 
     @Test
     void insert() {
-        User newUser = new User("Takashi", "takashi@gmail.com");
+        User newUser = new User("Takashi", "takashi@gmail.com", "pw");
         mapper.insert(newUser);
 
         List<User> users = mapper.findAllUsers();

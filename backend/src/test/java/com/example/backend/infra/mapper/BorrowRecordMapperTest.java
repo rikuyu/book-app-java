@@ -87,9 +87,10 @@ class BorrowRecordMapperTest {
         var beforeBorrowRecord = borrowRecordMapper.findByBookId(id).get(0);
         assertNull(beforeBorrowRecord.returnedDate);
 
+        int affectedRows = borrowRecordMapper.updateBorrowRecord(id, id);
         var afterBorrowRecord = borrowRecordMapper.findByBookId(id).get(0);
 
-        assertEquals(1, borrowRecordMapper.updateBorrowRecord(id, id));
+        assertEquals(1, affectedRows);
         assertNotNull(afterBorrowRecord.returnedDate);
     }
 }
