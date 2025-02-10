@@ -62,7 +62,7 @@ class BorrowRecordMapperTest {
     @Test
     void insertBorrowRecord() {
         var newBook = new Book("Test Book");
-        var newUser = new User("Takashi", "takashi@gmail.com");
+        var newUser = new User("Takashi", "takashi@gmail.com", "pw");
 
         bookMapper.insertBook(newBook);
         userMapper.insert(newUser);

@@ -2,8 +2,10 @@ package com.example.backend.controller;
 
 import com.example.backend.domain.entity.BorrowRecord;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,6 +14,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -112,6 +115,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
                 post("/borrow_record")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
         ).andExpect(status().isNoContent());
 
         verify(borrowRecordService, times(1)).insertBorrowRecordIfAvailable(any());
@@ -121,7 +125,9 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     void borrowBook_fail() throws Exception {
         when(borrowRecordService.insertBorrowRecordIfAvailable(any())).thenReturn(true);
         mockMvc.perform(
-                post("/borrow_record").contentType(MediaType.APPLICATION_JSON)
+                post("/borrow_record")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
         ).andExpect(status().isBadRequest());
         verify(borrowRecordService, times(0)).insertBorrowRecordIfAvailable(any());
     }
@@ -130,7 +136,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     void returnBook_success() throws Exception {
         when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
-                put("/borrow_record/{borrow_record}/book/{book_id}", 1, 1)
+                put("/borrow_record/{borrow_record}/book/{book_id}", 1, 1).with(csrf())
         ).andExpect(status().isNoContent());
 
         verify(borrowRecordService, times(1)).returnBook(1, 1);
@@ -140,7 +146,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     void returnBook_fail_bookId() throws Exception {
         when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
-                put("/borrow_record/{borrow_record}/book/{book_id}", 0, 1)
+                put("/borrow_record/{borrow_record}/book/{book_id}", 0, 1).with(csrf())
         ).andExpect(status().isBadRequest());
 
         verify(borrowRecordService, times(0)).returnBook(0, 1);
@@ -150,7 +156,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     void returnBook_fail_borrowRecordId() throws Exception {
         when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
-                put("/borrow_record/{borrow_record}/book/{book_id}", 1, 0)
+                put("/borrow_record/{borrow_record}/book/{book_id}", 1, 0).with(csrf())
         ).andExpect(status().isBadRequest());
 
         verify(borrowRecordService, times(0)).returnBook(1, 0);

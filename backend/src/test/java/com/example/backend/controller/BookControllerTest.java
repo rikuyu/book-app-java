@@ -3,8 +3,10 @@ package com.example.backend.controller;
 import com.example.backend.domain.entity.Book;
 import com.example.backend.domain.entity.Status;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Arrays;
 
@@ -13,6 +15,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -85,6 +88,7 @@ class BookControllerTest extends ControllerTestBase {
                 post("/book")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
+                        .with(csrf())
         ).andExpect(status().isNoContent());
         verify(bookService, times(1)).insertBook(any());
     }
@@ -92,7 +96,10 @@ class BookControllerTest extends ControllerTestBase {
     @Test
     void addBook_fail() throws Exception {
         doNothing().when(bookService).insertBook(any());
-        mockMvc.perform(post("/book").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                        post("/book")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(csrf()))
                 .andExpect(status().isBadRequest());
         verify(bookService, times(0)).insertBook(any());
     }
@@ -100,14 +107,16 @@ class BookControllerTest extends ControllerTestBase {
     @Test
     void deleteBookById_success() throws Exception {
         when(bookService.deleteById(1)).thenReturn(1);
-        mockMvc.perform(delete("/book/{id}", 1)).andExpect(status().isNoContent());
+        mockMvc.perform(delete("/book/{id}", 1).with(csrf()))
+                .andExpect(status().isNoContent());
         verify(bookService, times(1)).deleteById(1);
     }
 
     @Test
     void deleteBookById_fail() throws Exception {
         when(bookService.deleteById(1)).thenReturn(1);
-        mockMvc.perform(delete("/book/{id}", 0)).andExpect(status().isBadRequest());
+        mockMvc.perform(delete("/book/{id}", 0).with(csrf()))
+                .andExpect(status().isBadRequest());
         verify(bookService, times(0)).deleteById(1);
     }
 

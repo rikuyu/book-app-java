@@ -1,9 +1,12 @@
 package com.example.backend.controller;
 
+import com.example.backend.domain.entity.Role;
 import com.example.backend.domain.entity.User;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Arrays;
 
@@ -12,6 +15,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -21,8 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 class UserControllerTest extends ControllerTestBase {
 
-    private final User mockUser1 = new User(1, "user1", "user1@email.com");
-    private final User mockUser2 = new User(2, "user2", "user2@email.com");
+    private final User mockUser1 = new User(1, "user1", "user1@email.com", "pw1", Role.USER);
+    private final User mockUser2 = new User(2, "user2", "user2@email.com", "pw2", Role.USER);
 
     @Test
     void getAllUsers_success() throws Exception {
@@ -62,6 +66,7 @@ class UserControllerTest extends ControllerTestBase {
                         post("/user")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(requestBody)
+                                .with(csrf())
                 )
                 .andExpect(status().isNoContent());
 
@@ -71,7 +76,7 @@ class UserControllerTest extends ControllerTestBase {
     @Test
     void createUser_fail() throws Exception {
         doNothing().when(userService).insert(any());
-        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isBadRequest());
         verify(userService, times(0)).insert(any());
     }
@@ -106,14 +111,14 @@ class UserControllerTest extends ControllerTestBase {
     @Test
     void deleteUserById_success() throws Exception {
         when(userService.deleteById(1)).thenReturn(1);
-        mockMvc.perform(delete("/user/{id}", 1)).andExpect(status().isNoContent());
+        mockMvc.perform(delete("/user/{id}", 1).with(csrf())).andExpect(status().isNoContent());
         verify(userService, times(1)).deleteById(1);
     }
 
     @Test
     void deleteUserById_fail() throws Exception {
         when(userService.deleteById(1)).thenReturn(1);
-        mockMvc.perform(delete("/user/{id}", 0)).andExpect(status().isBadRequest());
+        mockMvc.perform(delete("/user/{id}", 0).with(csrf())).andExpect(status().isBadRequest());
         verify(userService, times(0)).deleteById(1);
     }
 }
