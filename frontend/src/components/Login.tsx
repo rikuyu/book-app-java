@@ -1,13 +1,42 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 
 function Login() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("test");
+    const [password, setPassword] = useState("pw");
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        if (!username || !password) {
+            alert("ユーザーネームとパスワードを入力してください。");
+            return;
+        }
+
+        fetch("http://localhost:8080/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({username, password}),
+            credentials: "include",
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Login failed");
+                }
+                console.log("Login Success");
+                navigate("/book");
+            })
+            .catch(() => {
+                console.error("Login Error");
+                alert("ログイン失敗");
+            });
+    };
 
     return (
         <div className="flex justify-center items-center h-screen">
-            <div className="flex flex-col items-center space-y-6 p-8 bg-white shadow-xl rounded-lg w-100 border border-gray-200">
+            <div
+                className="flex flex-col items-center space-y-6 p-8 bg-white shadow-xl rounded-lg w-100 border border-gray-200">
                 <h1 className="text-2xl font-bold">Login Page</h1>
                 <input
                     type="text"
@@ -23,11 +52,14 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-80 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ring-green-200"
                 />
-                <button className="w-80 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-500 transition">
+                <button
+                    className="w-80 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-500 transition"
+                    onClick={handleLogin}>
                     ログイン
                 </button>
                 <Link to="/register">
-                    <button className="w-80 px-4 py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-100 transition">
+                    <button
+                        className="w-80 px-4 py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-100 transition">
                         新規登録
                     </button>
                 </Link>
