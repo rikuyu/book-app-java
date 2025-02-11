@@ -62,7 +62,9 @@ const BookSearch: React.FC = () => {
                                 <Link to="/popular">
                                     <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">人気の書籍</li>
                                 </Link>
-                                <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">マイページ</li>
+                                <Link to="/mypage">
+                                    <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">マイページ</li>
+                                </Link>
                                 <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">ログアウト</li>
                             </ul>
                         </div>

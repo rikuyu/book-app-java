@@ -4,6 +4,7 @@ import Register from "./components/Register.tsx";
 import BookTable from "./components/BookTable.tsx";
 import PopularBooks from "./components/PopularBooks.tsx";
 import BookSearch from "./components/BookSearch.tsx";
+import MyPage from "./components/MyPage.tsx";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Route path="/book" element={<BookTable />}/>
                 <Route path="/popular" element={<PopularBooks/>}/>
                 <Route path="/search" element={<BookSearch/>}/>
+                <Route path="/mypage" element={<MyPage/>}/>
             </Routes>
         </BrowserRouter>
     )
