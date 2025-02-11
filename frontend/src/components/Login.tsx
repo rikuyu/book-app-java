@@ -2,13 +2,13 @@ import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 
 function Login() {
-    const [username, setUsername] = useState("test");
+    const [id, setId] = useState("1");
     const [password, setPassword] = useState("pw");
     const navigate = useNavigate();
 
     const handleLogin = () => {
-        if (!username || !password) {
-            alert("ユーザーネームとパスワードを入力してください。");
+        if (!id || !password) {
+            alert("ユーザーIDとパスワードを入力してください。");
             return;
         }
 
@@ -17,7 +17,7 @@ function Login() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({username, password}),
+            body: JSON.stringify({id, password}),
             credentials: "include",
         })
             .then(response => {
@@ -27,8 +27,8 @@ function Login() {
                 console.log("Login Success");
                 navigate("/book");
             })
-            .catch(() => {
-                console.error("Login Error");
+            .catch((error) => {
+                console.error(error);
                 alert("ログイン失敗");
             });
     };
@@ -40,9 +40,9 @@ function Login() {
                 <h1 className="text-2xl font-bold">Login Page</h1>
                 <input
                     type="text"
-                    placeholder="ユーザーネーム"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="ユーザーID"
+                    value={id}
+                    onChange={(e) => setId(e.target.value)}
                     className="w-80 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ring-green-200"
                 />
                 <input

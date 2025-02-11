@@ -42,7 +42,8 @@ public class SecurityConfig {
 
         if (securityEnabled) {
             http.authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/login", "/register", "/session").permitAll()
+                    .requestMatchers("/login", "/register").permitAll()
+                    .requestMatchers("/session").hasRole("ADMIN")
                     .anyRequest().authenticated()
             );
         } else {
