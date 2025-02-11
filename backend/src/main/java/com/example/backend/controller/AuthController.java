@@ -35,7 +35,7 @@ public class AuthController {
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        var token = UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.username(), loginRequest.password());
+        var token = UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.id(), loginRequest.password());
         var auth = authenticationManager.authenticate(token);
 
         if (auth.isAuthenticated()) {
@@ -43,7 +43,7 @@ public class AuthController {
             context.setAuthentication(auth);
             securityContextRepository.saveContext(context, request, response);
 
-            return ResponseEntity.ok("Login Successful: " + auth.getName());
+            return ResponseEntity.ok("Login Successful");
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }

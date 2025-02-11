@@ -3,12 +3,12 @@ SET time_zone = '+09:00';
 INSERT INTO users
     (name, email, password, role)
 VALUES
-    ('Master', 'john.doe@example.com', 'pw123', 'ADMIN'),
-    ('Jane Smith', 'jane.smith@example.com', 'pw456', 'USER'),
-    ('Michael Johnson', 'michael.j@example.com', 'pw789', 'USER'),
-    ('David Brown', 'david.brown@example.com', '123pw', 'USER'),
-    ('かがわ たかし', 'kagawa@example.com', '456pw', 'USER'),
-    ('いとう あみ', 'itoami@example.com', '789pw', 'USER');
+    ('Master', 'john.doe@example.com', '$2a$10$FYwnQLWSG.QGelTTW8JD2uJEtncJ9pVOxKaSBg03ddoWx7aWGnpg6', 'ADMIN'),
+    ('Jane Smith', 'jane.smith@example.com', '$2a$10$FYwnQLWSG.QGelTTW8JD2uJEtncJ9pVOxKaSBg03ddoWx7aWGnpg6', 'USER'),
+    ('Michael Johnson', 'michael.j@example.com', '$2a$10$FYwnQLWSG.QGelTTW8JD2uJEtncJ9pVOxKaSBg03ddoWx7aWGnpg6', 'USER'),
+    ('David Brown', 'david.brown@example.com', '$2a$10$FYwnQLWSG.QGelTTW8JD2uJEtncJ9pVOxKaSBg03ddoWx7aWGnpg6', 'USER'),
+    ('かがわ たかし', 'kagawa@example.com', '$2a$10$FYwnQLWSG.QGelTTW8JD2uJEtncJ9pVOxKaSBg03ddoWx7aWGnpg6', 'USER'),
+    ('いとう あみ', 'itoami@example.com', '$2a$10$FYwnQLWSG.QGelTTW8JD2uJEtncJ9pVOxKaSBg03ddoWx7aWGnpg6', 'USER');
 
 INSERT INTO books
     (title, status)
