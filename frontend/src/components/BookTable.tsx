@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {IoMenu} from "react-icons/io5";
 import {Link} from "react-router-dom";
 import {MdMenuBook} from "react-icons/md";
+import {useLogout} from "../utils/Logout.ts";
 
 export type Book = {
     id: number;
@@ -13,6 +14,7 @@ const BookTable: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen(!menuOpen);
     const [books, setBooks] = useState<Book[]>([]);
+    const logout = useLogout();
 
     useEffect(() => {
         fetchBooks()
@@ -65,7 +67,11 @@ const BookTable: React.FC = () => {
                                 <Link to="/mypage">
                                     <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">マイページ</li>
                                 </Link>
-                                <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">ログアウト</li>
+                                <li
+                                    className="hover:bg-gray-100 px-5 py-4 cursor-pointer"
+                                    onClick={logout}>
+                                    ログアウト
+                                </li>
                             </ul>
                         </div>
                     )}

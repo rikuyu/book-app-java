@@ -2,6 +2,7 @@ package com.example.backend.infra.security;
 
 import com.example.backend.domain.service.AuthUserDetailService;
 import com.example.backend.infra.mapper.UserMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,11 +42,16 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable);
 
         if (securityEnabled) {
-            http.authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/login", "/register").permitAll()
-                    .requestMatchers("/session").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-            );
+            http
+                    .logout(logout -> logout
+                            .logoutUrl("/logout")
+                            .logoutSuccessHandler((res, req, auth) -> req.setStatus(HttpServletResponse.SC_OK))
+                    )
+                    .authorizeHttpRequests(auth -> auth
+                            .requestMatchers("/login", "/register").permitAll()
+                            .requestMatchers("/session").hasRole("ADMIN")
+                            .anyRequest().authenticated()
+                    );
         } else {
             http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         }

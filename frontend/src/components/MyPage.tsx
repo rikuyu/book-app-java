@@ -2,10 +2,13 @@ import {useState} from 'react';
 import {MdAccountCircle} from 'react-icons/md';
 import {IoMenu} from 'react-icons/io5';
 import {Link} from 'react-router-dom';
+import {useLogout} from "../utils/Logout.ts";
 
 function MyPage() {
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen(!menuOpen);
+
+    const logout = useLogout();
 
     const [userData] = useState({
         id: 1,
@@ -17,7 +20,7 @@ function MyPage() {
         <div className="min-h-screen bg-gray-100 flex flex-col">
             <header className="bg-green-600 text-white py-4 flex justify-between items-center px-5">
                 <div className="flex items-center">
-                    <MdAccountCircle className="text-white w-8 h-8 mr-2" />
+                    <MdAccountCircle className="text-white w-8 h-8 mr-2"/>
                     <h1 className="text-2xl font-medium text-left">マイページ</h1>
                 </div>
                 <div className="relative">
@@ -25,7 +28,7 @@ function MyPage() {
                         onClick={toggleMenu}
                         className="p-2 text-white rounded-full focus:outline-none"
                     >
-                        <IoMenu className="text-white mx-3 w-7 h-7" />
+                        <IoMenu className="text-white mx-3 w-7 h-7"/>
                     </button>
                     {menuOpen && (
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10">
@@ -39,7 +42,11 @@ function MyPage() {
                                 <Link to="/search">
                                     <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">書籍の検索</li>
                                 </Link>
-                                <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">ログアウト</li>
+                                <li
+                                    className="hover:bg-gray-100 px-5 py-4 cursor-pointer"
+                                    onClick={logout}>
+                                    ログアウト
+                                </li>
                             </ul>
                         </div>
                     )}

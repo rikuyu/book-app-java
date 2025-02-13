@@ -4,11 +4,13 @@ import {IoMenu} from "react-icons/io5";
 import {IoMdSend} from "react-icons/io";
 import {Book} from "./BookTable.tsx";
 import {Link} from "react-router-dom";
+import {useLogout} from "../utils/Logout.ts";
 
 const BookSearch: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchText, setSearchText] = useState('');
     const [books, setBooks] = useState<Book[]>([]);
+    const logout = useLogout();
 
     const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -65,7 +67,11 @@ const BookSearch: React.FC = () => {
                                 <Link to="/mypage">
                                     <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">マイページ</li>
                                 </Link>
-                                <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">ログアウト</li>
+                                <li
+                                    className="hover:bg-gray-100 px-5 py-4 cursor-pointer"
+                                    onClick={logout}>
+                                    ログアウト
+                                </li>
                             </ul>
                         </div>
                     )}
