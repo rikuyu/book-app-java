@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {MdAccountCircle} from 'react-icons/md';
 import {IoMenu} from 'react-icons/io5';
 import {Link} from 'react-router-dom';
@@ -14,6 +14,7 @@ function MyPage() {
         email: '',
         isAdmin: false,
     });
+    const [profileImage, setProfileImage] = useState<string | null>(null);
 
     useEffect(() => {
         fetchMe()
@@ -45,6 +46,17 @@ function MyPage() {
                 console.error('Error fetching user data:', error);
             });
     }
+
+    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setProfileImage(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -99,13 +111,37 @@ function MyPage() {
 
             <main className="flex-grow flex items-center justify-center">
                 <div className="bg-white p-10 rounded-lg shadow-md max-w-lg w-full">
-                    <div className="flex items-center mb-6">
-                        <h2 className="text-2xl font-bold">ユーザー情報</h2>
+                    <div className="flex items-center mb-8">
+                        <h2 className="text-xl font-bold">ユーザー情報</h2>
                         {userData.isAdmin && (
                             <span className="ml-4 bg-red-500 text-white text-sm font-semibold py-1 px-2 rounded-md">
                               管理者
                             </span>
                         )}
+                    </div>
+                    <div className="mb-10 text-center">
+                        <div
+                            className="w-40 h-40 mx-auto rounded-full overflow-hidden bg-gray-200 border border-gray-300">
+                            {profileImage ? (
+                                <img src={profileImage} alt="Profile" className="w-full h-full object-cover"/>
+                            ) : (
+                                <span className="text-gray-500 flex items-center justify-center h-full">画像なし</span>
+                            )}
+                        </div>
+
+                        <label htmlFor="file-upload"
+                               className="mt-6 inline-block bg-green-600 text-white font-medium py-1.5 px-3 rounded-lg cursor-pointer hover:bg-green-700 mr-3">
+                            画像を選択
+                        </label>
+                        <input id="file-upload" type="file" onChange={handleImageUpload} className="hidden"/>
+                        <button
+                            className={`py-1.5 px-3 rounded-lg font-medium ${
+                                profileImage ? 'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer' : 'bg-gray-300 text-gray-800 cursor-not-allowed'
+                            }`}
+                            disabled={!profileImage}
+                        >
+                            送信
+                        </button>
                     </div>
                     <div className="mb-8 border-b pb-1 border-black">
                         <span className="font-medium text-gray-700 text-xl">id:</span>
