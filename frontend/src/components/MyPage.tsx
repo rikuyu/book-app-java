@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {MdAccountCircle} from 'react-icons/md';
 import {IoMenu} from 'react-icons/io5';
 import {Link} from 'react-router-dom';
@@ -7,14 +7,42 @@ import {useLogout} from "../utils/Logout.ts";
 function MyPage() {
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen(!menuOpen);
-
     const logout = useLogout();
-
-    const [userData] = useState({
-        id: 1,
-        username: 'JohnDoe',
-        email: 'john.doe@example.com',
+    const [userData, setUserData] = useState({
+        id: '',
+        name: '',
+        email: '',
     });
+
+    useEffect(() => {
+        fetchMe()
+    }, []);
+
+    const fetchMe = () => {
+        fetch('http://localhost:8080/user/me', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: "include",
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setUserData({
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                });
+            })
+            .catch((error) => {
+                console.error('Error fetching user data:', error);
+            });
+    }
 
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -54,19 +82,19 @@ function MyPage() {
             </header>
 
             <main className="flex-grow flex items-center justify-center">
-                <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
-                    <h2 className="text-xl font-bold mb-6">ユーザー情報</h2>
+                <div className="bg-white p-10 rounded-lg shadow-md max-w-lg w-full">
+                    <h2 className="text-2xl font-bold mb-6">ユーザー情報</h2>
                     <div className="mb-8 border-b pb-1 border-black">
-                        <span className="font-medium text-gray-700">id:</span>
-                        <span className="ml-2">{userData.id}</span>
+                        <span className="font-medium text-gray-700 text-xl">id:</span>
+                        <span className="ml-2 text-xl">{userData.id}</span>
                     </div>
                     <div className="mb-8 border-b pb-1 border-black">
-                        <span className="font-medium text-gray-700">ユーザー名:</span>
-                        <span className="ml-2">{userData.username}</span>
+                        <span className="font-medium text-gray-700 text-xl">ユーザー名:</span>
+                        <span className="ml-2 text-xl">{userData.name}</span>
                     </div>
-                    <div className="mb-4 border-b pb-1 border-black">
-                        <span className="font-medium text-gray-700">メールアドレス:</span>
-                        <span className="ml-2">{userData.email}</span>
+                    <div className="mb-3 border-b pb-1 border-black">
+                        <span className="font-medium text-gray-700 text-xl">メールアドレス:</span>
+                        <span className="ml-2 text-xl">{userData.email}</span>
                     </div>
                 </div>
             </main>
