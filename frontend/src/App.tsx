@@ -5,6 +5,8 @@ import BookTable from "./components/BookTable.tsx";
 import PopularBooks from "./components/PopularBooks.tsx";
 import BookSearch from "./components/BookSearch.tsx";
 import MyPage from "./components/MyPage.tsx";
+import UserTable from "./components/UserTable.tsx";
+import BorrowRecordTable from "./components/BorowRecordTable.tsx";
 
 function App() {
     return (
@@ -17,6 +19,8 @@ function App() {
                 <Route path="/popular" element={<PopularBooks/>}/>
                 <Route path="/search" element={<BookSearch/>}/>
                 <Route path="/mypage" element={<MyPage/>}/>
+                <Route path="/admin/users" element={<UserTable/>}/>
+                <Route path="/admin/borrow_records" element={<BorrowRecordTable/>}/>
             </Routes>
         </BrowserRouter>
     )
