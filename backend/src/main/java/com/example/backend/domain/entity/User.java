@@ -14,6 +14,7 @@ public class User implements UserDetails {
     public String name;
     public String email;
     public String password;
+    public String encodedPassword;
     public Role role = Role.USER;
 
     @JsonCreator
@@ -39,6 +40,10 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    public void setEncodedPassword(String encodedPassword) {
+        this.encodedPassword = encodedPassword;
     }
 
     @Override

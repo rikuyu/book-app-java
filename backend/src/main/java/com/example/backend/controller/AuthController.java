@@ -1,6 +1,9 @@
 package com.example.backend.controller;
 
 import com.example.backend.domain.entity.LoginRequest;
+import com.example.backend.domain.entity.User;
+import com.example.backend.domain.service.UserService;
+import com.example.backend.utils.InternalServerException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
@@ -24,9 +27,14 @@ public class AuthController {
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
     private final AuthenticationManager authenticationManager;
+    private final UserService service;
 
-    public AuthController(AuthenticationManager authenticationManager) {
+    public AuthController(
+            AuthenticationManager authenticationManager,
+            UserService service
+    ) {
         this.authenticationManager = authenticationManager;
+        this.service = service;
     }
 
     @PostMapping("/login")
@@ -46,6 +54,16 @@ public class AuthController {
             return ResponseEntity.ok("Login Successful");
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Void> createUser(@RequestBody @NotNull User user) {
+        try {
+            service.insert(user);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            throw new InternalServerException("something went wrong", e);
         }
     }
 }

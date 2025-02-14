@@ -49,6 +49,7 @@ class UserControllerTest extends ControllerTestBase {
         verify(userService, times(1)).findAllUsers();
     }
 
+    // TODO AuthControllerに移動
     @Test
     void createUser_success() throws Exception {
         doNothing().when(userService).insert(any());
@@ -71,6 +72,7 @@ class UserControllerTest extends ControllerTestBase {
         verify(userService, times(1)).insert(any());
     }
 
+    // TODO AuthControllerに移動
     @Test
     void createUser_fail() throws Exception {
         doNothing().when(userService).insert(any());

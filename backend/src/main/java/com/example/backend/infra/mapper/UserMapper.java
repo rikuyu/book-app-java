@@ -18,7 +18,7 @@ public interface UserMapper {
     @Select("SELECT * FROM users WHERE id = #{id}")
     User findById(int id);
 
-    @Insert("INSERT INTO users (name, email) VALUES (#{name}, #{email})")
+    @Insert("INSERT INTO users (name, email, password) VALUES (#{name}, #{email}, #{encodedPassword})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(User user);
 
