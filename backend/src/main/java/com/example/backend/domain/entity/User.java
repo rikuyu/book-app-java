@@ -58,6 +58,14 @@ public class User implements UserDetails {
         return this.name;
     }
 
+    public int getId() {
+        return this.id;
+    }
+
+    public String  getEmail() {
+        return this.email;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return UserDetails.super.isAccountNonExpired();
