@@ -12,6 +12,7 @@ function MyPage() {
         id: '',
         name: '',
         email: '',
+        isAdmin: false,
     });
 
     useEffect(() => {
@@ -37,6 +38,7 @@ function MyPage() {
                     id: data.id,
                     name: data.name,
                     email: data.email,
+                    isAdmin: data.isAdmin,
                 });
             })
             .catch((error) => {
@@ -48,8 +50,22 @@ function MyPage() {
         <div className="min-h-screen bg-gray-100 flex flex-col">
             <header className="bg-green-600 text-white py-4 flex justify-between items-center px-5">
                 <div className="flex items-center">
-                    <MdAccountCircle className="text-white w-8 h-8 mr-2"/>
-                    <h1 className="text-2xl font-medium text-left">マイページ</h1>
+                    <div className="flex items-center">
+                        <MdAccountCircle className="text-white w-7 h-7 mr-2"/>
+                        <h1 className="text-2xl font-medium text-left">マイページ</h1>
+                    </div>
+                    {userData.isAdmin && (
+                        <>
+                            <div className="border-l-2 border-white h-6 mx-4"></div>
+                            <Link to="/admin/users" className="text-lg font-medium hover:underline">
+                                管理用 すべてのユーザー
+                            </Link>
+                            <div className="border-l-2 border-white h-6 mx-4"></div>
+                            <Link to="/admin/borrow_records" className="text-lg font-medium hover:underline">
+                                管理用 貸出記録一覧
+                            </Link>
+                        </>
+                    )}
                 </div>
                 <div className="relative">
                     <button
@@ -83,7 +99,14 @@ function MyPage() {
 
             <main className="flex-grow flex items-center justify-center">
                 <div className="bg-white p-10 rounded-lg shadow-md max-w-lg w-full">
-                    <h2 className="text-2xl font-bold mb-6">ユーザー情報</h2>
+                    <div className="flex items-center mb-6">
+                        <h2 className="text-2xl font-bold">ユーザー情報</h2>
+                        {userData.isAdmin && (
+                            <span className="ml-4 bg-red-500 text-white text-sm font-semibold py-1 px-2 rounded-md">
+                              管理者
+                            </span>
+                        )}
+                    </div>
                     <div className="mb-8 border-b pb-1 border-black">
                         <span className="font-medium text-gray-700 text-xl">id:</span>
                         <span className="ml-2 text-xl">{userData.id}</span>

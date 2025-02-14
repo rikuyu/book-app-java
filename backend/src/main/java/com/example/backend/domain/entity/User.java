@@ -46,6 +46,11 @@ public class User implements UserDetails {
         this.encodedPassword = encodedPassword;
     }
 
+    public boolean isAdmin() {
+        return getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List <GrantedAuthority> authorities = new ArrayList<>();
