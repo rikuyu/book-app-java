@@ -4,20 +4,23 @@ import com.example.backend.domain.entity.Role;
 import com.example.backend.domain.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 
 import java.util.Arrays;
+import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
@@ -47,38 +50,6 @@ class UserControllerTest extends ControllerTestBase {
                         """
                 ));
         verify(userService, times(1)).findAllUsers();
-    }
-
-    // TODO AuthControllerに移動
-    @Test
-    void createUser_success() throws Exception {
-        doNothing().when(userService).insert(any());
-
-        var requestBody = """
-                {
-                    "name": "user1",
-                    "email": "user1@email.com"
-                }
-                """;
-
-        mockMvc.perform(
-                        post("/user")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(requestBody)
-                                .with(csrf())
-                )
-                .andExpect(status().isNoContent());
-
-        verify(userService, times(1)).insert(any());
-    }
-
-    // TODO AuthControllerに移動
-    @Test
-    void createUser_fail() throws Exception {
-        doNothing().when(userService).insert(any());
-        mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).with(csrf()))
-                .andExpect(status().isBadRequest());
-        verify(userService, times(0)).insert(any());
     }
 
     @Test
@@ -120,5 +91,25 @@ class UserControllerTest extends ControllerTestBase {
         when(userService.deleteById(1)).thenReturn(1);
         mockMvc.perform(delete("/user/{id}", 0).with(csrf())).andExpect(status().isBadRequest());
         verify(userService, times(0)).deleteById(1);
+    }
+
+    @Test
+    void getMe_success() throws Exception {
+        Authentication auth = new UsernamePasswordAuthenticationToken(
+                mockUser1,
+                null,
+                List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))
+        );
+        mockMvc.perform(get("/user/me").with(SecurityMockMvcRequestPostProcessors.authentication(auth)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is(mockUser1.getUsername())))
+                .andExpect(jsonPath("$.email", is(mockUser1.getEmail())))
+                .andExpect(jsonPath("$.isAdmin", is(mockUser1.isAdmin())));
+    }
+
+    @Test
+    void getMe_fail() throws Exception {
+        mockMvc.perform(get("/user/me")).andExpect(status().isUnauthorized());
     }
 }
