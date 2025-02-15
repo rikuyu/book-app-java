@@ -3,10 +3,13 @@ import {MdAccountCircle} from 'react-icons/md';
 import {IoMenu} from 'react-icons/io5';
 import {Link} from 'react-router-dom';
 import {useLogout} from "../utils/Logout.ts";
+import {IoMdSettings} from "react-icons/io";
 
 function MyPage() {
     const [menuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => setMenuOpen(!menuOpen);
+    const [adminMenuOpen, setAdminMenuOpen] = useState(false);
+    const toggleAdminMenu = () => setAdminMenuOpen(!adminMenuOpen);
     const logout = useLogout();
     const [userData, setUserData] = useState({
         id: '',
@@ -87,21 +90,34 @@ function MyPage() {
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col">
             <header className="bg-green-600 text-white py-4 flex justify-between items-center px-5">
-                <div className="flex items-center">
+                <div className="flex items-center relative">
                     <div className="flex items-center">
-                        <MdAccountCircle className="text-white w-7 h-7 mr-2"/>
+                        <MdAccountCircle className="text-white w-7 h-7 mr-2" />
                         <h1 className="text-2xl font-medium text-left">マイページ</h1>
                     </div>
                     {userData.isAdmin && (
                         <>
-                            <div className="border-l-2 border-white h-6 mx-4"></div>
-                            <Link to="/admin/users" className="text-lg font-medium hover:underline">
-                                管理用 すべてのユーザー
-                            </Link>
-                            <div className="border-l-2 border-white h-6 mx-4"></div>
-                            <Link to="/admin/borrow_records" className="text-lg font-medium hover:underline">
-                                管理用 貸出記録一覧
-                            </Link>
+                            <button
+                                onClick={toggleAdminMenu}
+                                className="p-2 rounded-full focus:outline-none"
+                            >
+                                <IoMdSettings className="text-white mx-3 w-7 h-7" />
+                            </button>
+                            {adminMenuOpen && (
+                                <div className="absolute top-full right-[-220px] mt-1 w-68 bg-white rounded shadow-lg z-10">
+                                    <ul className="text-gray-800">
+                                        <Link to="/admin/borrow_records">
+                                            <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">【管理者用】すべての貸出記録</li>
+                                        </Link>
+                                        <Link to="/admin/users">
+                                            <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">【管理者用】すべてのユーザー</li>
+                                        </Link>
+                                        <Link to="/admin/add_book">
+                                            <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">【管理者用】書籍の追加</li>
+                                        </Link>
+                                    </ul>
+                                </div>
+                            )}
                         </>
                     )}
                 </div>
@@ -124,9 +140,7 @@ function MyPage() {
                                 <Link to="/search">
                                     <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">書籍の検索</li>
                                 </Link>
-                                <li
-                                    className="hover:bg-gray-100 px-5 py-4 cursor-pointer"
-                                    onClick={logout}>
+                                <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer" onClick={logout}>
                                     ログアウト
                                 </li>
                             </ul>

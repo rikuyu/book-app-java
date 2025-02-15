@@ -7,6 +7,7 @@ import BookSearch from "./components/BookSearch.tsx";
 import MyPage from "./components/MyPage.tsx";
 import UserTable from "./components/UserTable.tsx";
 import BorrowRecordTable from "./components/BorowRecordTable.tsx";
+import AddBook from "./components/AddBook.tsx";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/mypage" element={<MyPage/>}/>
                 <Route path="/admin/users" element={<UserTable/>}/>
                 <Route path="/admin/borrow_records" element={<BorrowRecordTable/>}/>
+                <Route path="/admin/add_book" element={<AddBook/>}/>
             </Routes>
         </BrowserRouter>
     )
