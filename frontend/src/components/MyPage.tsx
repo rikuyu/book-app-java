@@ -75,7 +75,7 @@ function MyPage() {
             })
             .then((data) => {
                 console.log('Image uploaded successfully:', data);
-                alert('画像のアップロードが成功しました！');
+                alert('プロフィール画像を更新しました。');
             })
             .catch((error) => {
                 console.error('Error uploading image:', error);
