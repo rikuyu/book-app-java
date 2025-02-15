@@ -36,12 +36,12 @@ class BookControllerTest extends ControllerTestBase {
                             {
                                 "id": 1,
                                 "title": "book1",
-                                "status": "AVAIlABLE"
+                                "status": "AVAILABLE"
                             },
                             {
                                 "id": 2,
                                 "title": "book2",
-                                "status": "AVAIlABLE"
+                                "status": "AVAILABLE"
                             }
                         ]
                         """
@@ -58,7 +58,7 @@ class BookControllerTest extends ControllerTestBase {
                         {
                             "id": 1,
                             "title": "book1",
-                            "status": "AVAIlABLE"
+                            "status": "AVAILABLE"
                         }
                         """
                 ));
@@ -130,7 +130,7 @@ class BookControllerTest extends ControllerTestBase {
                                     {
                                         "id": 1,
                                         "title": "book1",
-                                        "status": "AVAIlABLE"
+                                        "status": "AVAILABLE"
                                     }
                                 ]
                                 """
@@ -157,12 +157,12 @@ class BookControllerTest extends ControllerTestBase {
                             {
                                 "id": 1,
                                 "title": "book1",
-                                "status": "AVAIlABLE"
+                                "status": "AVAILABLE"
                             },
                             {
                                 "id": 2,
                                 "title": "book2",
-                                "status": "AVAIlABLE"
+                                "status": "AVAILABLE"
                             }
                         ]
                         """
