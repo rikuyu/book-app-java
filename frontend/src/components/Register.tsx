@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
+import {BASE_URL} from "../utils/Constants.ts";
 
 function Register() {
     const [name, setName] = useState('');
@@ -13,7 +14,7 @@ function Register() {
             return;
         }
 
-        fetch('http://localhost:8080/register', {
+        fetch(`${BASE_URL}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

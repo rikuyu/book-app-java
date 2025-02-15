@@ -1,5 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
+import {BASE_URL} from "../utils/Constants.ts";
 
 function Login() {
     const [id, setId] = useState("1");
@@ -12,7 +13,7 @@ function Login() {
             return;
         }
 
-        fetch("http://localhost:8080/login", {
+        fetch(`${BASE_URL}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

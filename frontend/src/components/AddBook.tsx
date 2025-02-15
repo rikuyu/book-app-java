@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {IoMenu} from 'react-icons/io5';
 import {Link} from 'react-router-dom';
 import {FaBookOpen} from "react-icons/fa";
+import {BASE_URL} from "../utils/Constants.ts";
 
 const AddBook = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -14,7 +15,7 @@ const AddBook = () => {
             return;
         }
 
-        fetch('http://localhost:8080/book', {
+        fetch(`${BASE_URL}/book`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

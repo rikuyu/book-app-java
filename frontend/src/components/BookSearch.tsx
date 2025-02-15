@@ -5,6 +5,7 @@ import {IoMdSend} from "react-icons/io";
 import {Book} from "./BookTable.tsx";
 import {Link} from "react-router-dom";
 import {useLogout} from "../utils/Logout.ts";
+import {BASE_URL} from "../utils/Constants.ts";
 
 const BookSearch: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -19,7 +20,7 @@ const BookSearch: React.FC = () => {
             alert("キーワードを入力してください")
         }
 
-        fetch(`http://localhost:8080/book/search?keyword=${encodeURIComponent(searchText)}`, {
+        fetch(`${BASE_URL}/book/search?keyword=${encodeURIComponent(searchText)}`, {
             method: "GET",
             credentials: "include",
         })

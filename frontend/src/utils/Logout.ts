@@ -1,10 +1,11 @@
 import {useNavigate} from 'react-router-dom';
+import {BASE_URL} from "./Constants.ts";
 
 export const useLogout = () => {
     const navigate = useNavigate();
 
     return () => {
-        fetch('http://localhost:8080/logout', {
+        fetch(`${BASE_URL}/logout`, {
             method: 'POST',
             credentials: 'include',
         })

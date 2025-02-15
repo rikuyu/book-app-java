@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {FaCrown, FaAward} from "react-icons/fa";
 import {Book} from "./BookTable.tsx";
 import {useLogout} from "../utils/Logout.ts";
+import {BASE_URL} from "../utils/Constants.ts";
 
 const PopularBooks: React.FC = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -16,7 +17,7 @@ const PopularBooks: React.FC = () => {
     }, [])
 
     const fetchBooks = () => {
-        fetch("http://localhost:8080/book/popular", {
+        fetch(`${BASE_URL}/book/popular`, {
             method: "GET",
             credentials: "include",
         })

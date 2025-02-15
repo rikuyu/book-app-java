@@ -3,6 +3,7 @@ import {IoMenu} from "react-icons/io5";
 import {Link} from "react-router-dom";
 import {MdMenuBook} from "react-icons/md";
 import {useLogout} from "../utils/Logout.ts";
+import {BASE_URL} from "../utils/Constants.ts";
 
 export type Book = {
     id: number;
@@ -21,7 +22,7 @@ const BookTable: React.FC = () => {
     }, [])
 
     const fetchBooks = () => {
-        fetch("http://localhost:8080/book", {
+        fetch(`${BASE_URL}/book`, {
             method: "GET",
             credentials: "include",
         })

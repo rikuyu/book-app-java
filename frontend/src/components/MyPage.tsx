@@ -4,6 +4,7 @@ import {IoMenu} from 'react-icons/io5';
 import {Link} from 'react-router-dom';
 import {useLogout} from "../utils/Logout.ts";
 import {IoMdSettings} from "react-icons/io";
+import {BASE_URL} from "../utils/Constants.ts";
 
 function MyPage() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -24,7 +25,7 @@ function MyPage() {
     }, []);
 
     const fetchMe = () => {
-        fetch('http://localhost:8080/user/me', {
+        fetch(`${BASE_URL}/user/me`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

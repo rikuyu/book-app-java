@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {IoMenu} from "react-icons/io5";
 import {Link} from "react-router-dom";
 import {MdHistory} from "react-icons/md";
+import {BASE_URL} from "../utils/Constants.ts";
 
 type BorrowRecord = {
     id: number;
@@ -21,7 +22,7 @@ const BorrowRecordTable = () => {
     }, []);
 
     const fetchRecords = () => {
-        fetch("http://localhost:8080/borrow_record", {
+        fetch(`${BASE_URL}/borrow_record`, {
             method: "GET",
             credentials: "include",
         })

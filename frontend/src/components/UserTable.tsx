@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {IoMenu} from "react-icons/io5";
 import {Link} from "react-router-dom";
 import {MdGroup} from "react-icons/md";
+import {BASE_URL} from "../utils/Constants.ts";
 
 type User = {
     id: number;
@@ -20,7 +21,7 @@ const UserTable: React.FC = () => {
     }, []);
 
     const fetchUsers = () => {
-        fetch("http://localhost:8080/user", {
+        fetch(`${BASE_URL}/user`, {
             method: "GET",
             credentials: "include",
         })
