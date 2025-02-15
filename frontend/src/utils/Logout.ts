@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 export const useLogout = () => {
     const navigate = useNavigate();
 
-    const logout = () => {
+    return () => {
         fetch('http://localhost:8080/logout', {
             method: 'POST',
             credentials: 'include',
@@ -20,7 +20,5 @@ export const useLogout = () => {
                 console.error('Logout error:', error);
             });
     };
-
-    return logout;
 };
 
