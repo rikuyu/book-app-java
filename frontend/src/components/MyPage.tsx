@@ -47,7 +47,7 @@ function MyPage() {
             });
     }
 
-    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             const reader = new FileReader();
@@ -57,6 +57,32 @@ function MyPage() {
             reader.readAsDataURL(file);
         }
     };
+
+    const uploadImage = (file: File) => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        fetch('http://localhost:8080/user/image', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include',
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Failed to upload image. Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('Image uploaded successfully:', data);
+                alert('画像のアップロードが成功しました！');
+            })
+            .catch((error) => {
+                console.error('Error uploading image:', error);
+                alert('画像のアップロードに失敗しました。');
+            });
+    };
+
 
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -111,7 +137,7 @@ function MyPage() {
 
             <main className="flex-grow flex items-center justify-center">
                 <div className="bg-white p-10 rounded-lg shadow-md max-w-lg w-full">
-                    <div className="flex items-center mb-8">
+                    <div className="flex items-center mb-7">
                         <h2 className="text-xl font-bold">ユーザー情報</h2>
                         {userData.isAdmin && (
                             <span className="ml-4 bg-red-500 text-white text-sm font-semibold py-1 px-2 rounded-md">
@@ -128,17 +154,22 @@ function MyPage() {
                                 <span className="text-gray-500 flex items-center justify-center h-full">画像なし</span>
                             )}
                         </div>
-
                         <label htmlFor="file-upload"
                                className="mt-6 inline-block bg-green-600 text-white font-medium py-1.5 px-3 rounded-lg cursor-pointer hover:bg-green-700 mr-3">
                             画像を選択
                         </label>
-                        <input id="file-upload" type="file" onChange={handleImageUpload} className="hidden"/>
+                        <input id="file-upload" type="file" onChange={selectImage} className="hidden"/>
                         <button
-                            className={`py-1.5 px-3 rounded-lg font-medium ${
+                            className={`py-1.5 px-3 rounded-lg font-medium mt-4 ${
                                 profileImage ? 'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer' : 'bg-gray-300 text-gray-800 cursor-not-allowed'
                             }`}
                             disabled={!profileImage}
+                            onClick={() => {
+                                const inputElement = document.getElementById('file-upload') as HTMLInputElement;
+                                if (inputElement.files?.[0]) {
+                                    uploadImage(inputElement.files[0]);
+                                }
+                            }}
                         >
                             送信
                         </button>
