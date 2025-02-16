@@ -55,7 +55,7 @@ const BorrowRecordTable = () => {
             <header className="bg-green-600 text-white py-4 flex justify-between items-center px-5">
                 <div className="flex items-center">
                     <MdHistory className="text-white w-7 h-7 mr-2"/>
-                    <h1 className="text-2xl font-medium">管理用 貸出記録一覧</h1>
+                    <h1 className="text-2xl font-medium">【管理者用】貸出記録一覧</h1>
                 </div>
                 <div className="relative">
                     <button onClick={toggleMenu} className="p-2 text-white rounded-full focus:outline-none">

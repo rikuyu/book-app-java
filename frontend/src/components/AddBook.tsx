@@ -42,7 +42,7 @@ const AddBook = () => {
             <header className="bg-green-600 text-white py-4 flex justify-between items-center px-5">
                 <div className="flex items-center">
                     <FaBookOpen className="text-white w-6 h-6 mr-2"/>
-                    <h1 className="text-2xl font-medium">書籍の追加</h1>
+                    <h1 className="text-2xl font-medium">【管理者用】書籍の追加</h1>
                 </div>
                 <div className="relative">
                     <button onClick={toggleMenu} className="p-2 text-white rounded-full focus:outline-none">

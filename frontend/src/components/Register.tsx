@@ -26,7 +26,7 @@ function Register() {
                     throw new Error('Registration failed');
                 }
                 console.log('Registration Successful');
-                alert('登録が成功しました。ログインページに移動します。');
+                alert('登録に成功しました。ログインページに移動します。');
                 navigate('/login');
             })
             .catch((error) => {

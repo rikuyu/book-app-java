@@ -42,7 +42,7 @@ const UserTable: React.FC = () => {
             <header className="bg-green-600 text-white py-4 flex justify-between items-center px-5">
                 <div className="flex items-center">
                     <MdGroup className="text-white w-8 h-8 mr-2"/>
-                    <h1 className="text-2xl font-medium">管理用 すべてのユーザー</h1>
+                    <h1 className="text-2xl font-medium">【管理者用】すべてのユーザー</h1>
                 </div>
                 <div className="relative">
                     <button onClick={toggleMenu} className="p-2 text-white rounded-full focus:outline-none">
