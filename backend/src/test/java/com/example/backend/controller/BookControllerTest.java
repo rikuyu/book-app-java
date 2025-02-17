@@ -29,7 +29,7 @@ class BookControllerTest extends ControllerTestBase {
     @Test
     void getBook_success() throws Exception {
         when(bookService.findAllBooks()).thenReturn(Arrays.asList(mockBook1, mockBook2));
-        mockMvc.perform(get("/book"))
+        mockMvc.perform(get("/books"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         [
@@ -52,7 +52,7 @@ class BookControllerTest extends ControllerTestBase {
     @Test
     void getBookById_success() throws Exception {
         when(bookService.findById(1)).thenReturn(mockBook1);
-        mockMvc.perform(get("/book/{id}", 1))
+        mockMvc.perform(get("/books/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
@@ -68,7 +68,7 @@ class BookControllerTest extends ControllerTestBase {
     @Test
     void getBookById_fail() throws Exception {
         when(bookService.findById(1)).thenReturn(mockBook1);
-        mockMvc.perform(get("/book/{id}", 0))
+        mockMvc.perform(get("/books/{id}", 0))
                 .andExpect(status().isBadRequest());
         verify(bookService, times(0)).findById(1);
     }
@@ -83,7 +83,7 @@ class BookControllerTest extends ControllerTestBase {
                 """;
 
         mockMvc.perform(
-                post("/book")
+                post("/books")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
                         .with(csrf())
@@ -95,7 +95,7 @@ class BookControllerTest extends ControllerTestBase {
     void addBook_fail() throws Exception {
         doNothing().when(bookService).insertBook(any());
         mockMvc.perform(
-                        post("/book")
+                        post("/books")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf()))
                 .andExpect(status().isBadRequest());
@@ -105,7 +105,7 @@ class BookControllerTest extends ControllerTestBase {
     @Test
     void deleteBookById_success() throws Exception {
         when(bookService.deleteById(1)).thenReturn(1);
-        mockMvc.perform(delete("/book/{id}", 1).with(csrf()))
+        mockMvc.perform(delete("/books/{id}", 1).with(csrf()))
                 .andExpect(status().isNoContent());
         verify(bookService, times(1)).deleteById(1);
     }
@@ -113,7 +113,7 @@ class BookControllerTest extends ControllerTestBase {
     @Test
     void deleteBookById_fail() throws Exception {
         when(bookService.deleteById(1)).thenReturn(1);
-        mockMvc.perform(delete("/book/{id}", 0).with(csrf()))
+        mockMvc.perform(delete("/books/{id}", 0).with(csrf()))
                 .andExpect(status().isBadRequest());
         verify(bookService, times(0)).deleteById(1);
     }
@@ -122,7 +122,7 @@ class BookControllerTest extends ControllerTestBase {
     void searchBooks_success() throws Exception {
         var keyword = "ok1";
         when(bookService.search(keyword)).thenReturn(Arrays.asList(mockBook1));
-        mockMvc.perform(get("/book/search").param("keyword", keyword))
+        mockMvc.perform(get("/books/search").param("keyword", keyword))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         """
@@ -142,7 +142,7 @@ class BookControllerTest extends ControllerTestBase {
     void searchBooks_fail() throws Exception {
         var keyword = "";
         when(bookService.search(keyword)).thenReturn(Arrays.asList(mockBook1));
-        mockMvc.perform(get("/book/search").param("keyword", keyword))
+        mockMvc.perform(get("/books/search").param("keyword", keyword))
                 .andExpect(status().isBadRequest());
         verify(bookService, times(0)).search(keyword);
     }
@@ -150,7 +150,7 @@ class BookControllerTest extends ControllerTestBase {
     @Test
     void getPopularBooks_success() throws Exception {
         when(bookService.getPopularBooks()).thenReturn(Arrays.asList(mockBook1, mockBook2));
-        mockMvc.perform(get("/book/popular"))
+        mockMvc.perform(get("/books/popular"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         [

@@ -52,7 +52,7 @@ public class BorrowRecordController {
         }
     }
 
-    @GetMapping("/book")
+    @GetMapping("/books")
     public ResponseEntity<List<BorrowRecord>> getBookRecordsByBookId(
             @RequestParam("id") @Positive int bookId
     ) {

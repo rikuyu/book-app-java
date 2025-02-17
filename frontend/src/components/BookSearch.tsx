@@ -20,7 +20,7 @@ const BookSearch: React.FC = () => {
             alert("キーワードを入力してください")
         }
 
-        fetch(`${BASE_URL}/book/search?keyword=${encodeURIComponent(searchText)}`, {
+        fetch(`${BASE_URL}/books/search?keyword=${encodeURIComponent(searchText)}`, {
             method: "GET",
             credentials: "include",
         })

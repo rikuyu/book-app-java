@@ -17,7 +17,7 @@ const PopularBooks: React.FC = () => {
     }, [])
 
     const fetchBooks = () => {
-        fetch(`${BASE_URL}/book/popular`, {
+        fetch(`${BASE_URL}/books/popular`, {
             method: "GET",
             credentials: "include",
         })

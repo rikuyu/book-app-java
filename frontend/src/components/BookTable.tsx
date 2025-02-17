@@ -22,7 +22,7 @@ const BookTable: React.FC = () => {
     }, [])
 
     const fetchBooks = () => {
-        fetch(`${BASE_URL}/book`, {
+        fetch(`${BASE_URL}/books`, {
             method: "GET",
             credentials: "include",
         })
