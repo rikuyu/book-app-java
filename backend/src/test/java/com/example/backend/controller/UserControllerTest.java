@@ -32,7 +32,7 @@ class UserControllerTest extends ControllerTestBase {
     @Test
     void getAllUsers_success() throws Exception {
         when(userService.findAllUsers()).thenReturn(Arrays.asList(mockUser1, mockUser2));
-        mockMvc.perform(get("/user"))
+        mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         [
@@ -55,7 +55,7 @@ class UserControllerTest extends ControllerTestBase {
     @Test
     void getUserById_success() throws Exception {
         when(userService.findById(1)).thenReturn(mockUser1);
-        mockMvc.perform(get("/user/{id}", 1))
+        mockMvc.perform(get("/users/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(
                         content().json("""
@@ -73,7 +73,7 @@ class UserControllerTest extends ControllerTestBase {
     @Test
     void getUserById_fail() throws Exception {
         when(userService.findById(1)).thenReturn(mockUser1);
-        mockMvc.perform(get("/user/{id}", 0))
+        mockMvc.perform(get("/users/{id}", 0))
                 .andExpect(status().isBadRequest());
         verify(userService, times(0)).findById(1);
     }
@@ -82,14 +82,14 @@ class UserControllerTest extends ControllerTestBase {
     @Test
     void deleteUserById_success() throws Exception {
         when(userService.deleteById(1)).thenReturn(1);
-        mockMvc.perform(delete("/user/{id}", 1).with(csrf())).andExpect(status().isNoContent());
+        mockMvc.perform(delete("/users/{id}", 1).with(csrf())).andExpect(status().isNoContent());
         verify(userService, times(1)).deleteById(1);
     }
 
     @Test
     void deleteUserById_fail() throws Exception {
         when(userService.deleteById(1)).thenReturn(1);
-        mockMvc.perform(delete("/user/{id}", 0).with(csrf())).andExpect(status().isBadRequest());
+        mockMvc.perform(delete("/users/{id}", 0).with(csrf())).andExpect(status().isBadRequest());
         verify(userService, times(0)).deleteById(1);
     }
 
@@ -100,7 +100,7 @@ class UserControllerTest extends ControllerTestBase {
                 null,
                 List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))
         );
-        mockMvc.perform(get("/user/me").with(SecurityMockMvcRequestPostProcessors.authentication(auth)))
+        mockMvc.perform(get("/users/me").with(SecurityMockMvcRequestPostProcessors.authentication(auth)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is(mockUser1.getUsername())))
@@ -110,6 +110,6 @@ class UserControllerTest extends ControllerTestBase {
 
     @Test
     void getMe_fail() throws Exception {
-        mockMvc.perform(get("/user/me")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/users/me")).andExpect(status().isUnauthorized());
     }
 }

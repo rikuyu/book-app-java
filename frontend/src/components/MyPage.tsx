@@ -25,7 +25,7 @@ function MyPage() {
     }, []);
 
     const fetchMe = () => {
-        fetch(`${BASE_URL}/user/me`, {
+        fetch(`${BASE_URL}/users/me`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ function MyPage() {
         const formData = new FormData();
         formData.append('file', file);
 
-        fetch('http://localhost:8080/user/image', {
+        fetch('http://localhost:8080/users/image', {
             method: 'POST',
             body: formData,
             credentials: 'include',

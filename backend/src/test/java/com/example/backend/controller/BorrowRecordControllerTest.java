@@ -55,7 +55,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     @Test
     void getBookRecordsByUserId_success() throws Exception {
         when(borrowRecordService.findByUserId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
-        mockMvc.perform(get("/borrow_record/user").param("id", "1"))
+        mockMvc.perform(get("/borrow_record/users").param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                                 [
@@ -74,7 +74,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     @Test
     void getBookRecordsByUserId_fail() throws Exception {
         when(borrowRecordService.findByUserId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
-        mockMvc.perform(get("/borrow_record/user").param("id", "0"))
+        mockMvc.perform(get("/borrow_record/users").param("id", "0"))
                 .andExpect(status().isBadRequest());
         verify(borrowRecordService, times(0)).findByUserId(1);
     }

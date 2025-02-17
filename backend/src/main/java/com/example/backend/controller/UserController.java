@@ -30,7 +30,7 @@ import java.util.UUID;
 
 @Validated
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024;  // 5MB

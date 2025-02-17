@@ -21,7 +21,7 @@ const UserTable: React.FC = () => {
     }, []);
 
     const fetchUsers = () => {
-        fetch(`${BASE_URL}/user`, {
+        fetch(`${BASE_URL}/users`, {
             method: "GET",
             credentials: "include",
         })
