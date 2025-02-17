@@ -22,7 +22,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/borrow_record")
+@RequestMapping("/borrow_records")
 public class BorrowRecordController {
 
     private final BorrowRecordService service;

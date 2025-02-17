@@ -22,7 +22,7 @@ const BorrowRecordTable = () => {
     }, []);
 
     const fetchRecords = () => {
-        fetch(`${BASE_URL}/borrow_record`, {
+        fetch(`${BASE_URL}/borrow_records`, {
             method: "GET",
             credentials: "include",
         })

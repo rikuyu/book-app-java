@@ -28,7 +28,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     @Test
     void getBorrowRecord_success() throws Exception {
         when(borrowRecordService.findAllBorrowRecords()).thenReturn(Arrays.asList(mockBorrowRecord1, mockBorrowRecord2));
-        mockMvc.perform(get("/borrow_record"))
+        mockMvc.perform(get("/borrow_records"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                                 [
@@ -55,7 +55,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     @Test
     void getBookRecordsByUserId_success() throws Exception {
         when(borrowRecordService.findByUserId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
-        mockMvc.perform(get("/borrow_record/users").param("id", "1"))
+        mockMvc.perform(get("/borrow_records/users").param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                                 [
@@ -74,7 +74,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     @Test
     void getBookRecordsByUserId_fail() throws Exception {
         when(borrowRecordService.findByUserId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
-        mockMvc.perform(get("/borrow_record/users").param("id", "0"))
+        mockMvc.perform(get("/borrow_records/users").param("id", "0"))
                 .andExpect(status().isBadRequest());
         verify(borrowRecordService, times(0)).findByUserId(1);
     }
@@ -82,7 +82,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     @Test
     void getBookRecordsByBookId_success() throws Exception {
         when(borrowRecordService.findByBookId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
-        mockMvc.perform(get("/borrow_record/book").param("id", "1"))
+        mockMvc.perform(get("/borrow_records/book").param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                                 [
@@ -110,7 +110,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
                 """;
 
         mockMvc.perform(
-                post("/borrow_record")
+                post("/borrow_records")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
@@ -123,7 +123,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     void borrowBook_fail() throws Exception {
         when(borrowRecordService.insertBorrowRecordIfAvailable(any())).thenReturn(true);
         mockMvc.perform(
-                post("/borrow_record")
+                post("/borrow_records")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
         ).andExpect(status().isBadRequest());
@@ -134,7 +134,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     void returnBook_success() throws Exception {
         when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
-                put("/borrow_record/{borrow_record}/book/{book_id}", 1, 1).with(csrf())
+                put("/borrow_records/{borrow_record}/book/{book_id}", 1, 1).with(csrf())
         ).andExpect(status().isNoContent());
 
         verify(borrowRecordService, times(1)).returnBook(1, 1);
@@ -144,7 +144,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     void returnBook_fail_bookId() throws Exception {
         when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
-                put("/borrow_record/{borrow_record}/book/{book_id}", 0, 1).with(csrf())
+                put("/borrow_records/{borrow_record}/book/{book_id}", 0, 1).with(csrf())
         ).andExpect(status().isBadRequest());
 
         verify(borrowRecordService, times(0)).returnBook(0, 1);
@@ -154,7 +154,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     void returnBook_fail_borrowRecordId() throws Exception {
         when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
-                put("/borrow_record/{borrow_record}/book/{book_id}", 1, 0).with(csrf())
+                put("/borrow_records/{borrow_record}/book/{book_id}", 1, 0).with(csrf())
         ).andExpect(status().isBadRequest());
 
         verify(borrowRecordService, times(0)).returnBook(1, 0);
