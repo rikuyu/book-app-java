@@ -82,7 +82,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     @Test
     void getBookRecordsByBookId_success() throws Exception {
         when(borrowRecordService.findByBookId(1)).thenReturn(Collections.singletonList(mockBorrowRecord1));
-        mockMvc.perform(get("/borrow_records/book").param("id", "1"))
+        mockMvc.perform(get("/borrow_records/books").param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                                 [
@@ -134,7 +134,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     void returnBook_success() throws Exception {
         when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
-                put("/borrow_records/{borrow_record}/book/{book_id}", 1, 1).with(csrf())
+                put("/borrow_records/{borrow_record}/books/{book_id}", 1, 1).with(csrf())
         ).andExpect(status().isNoContent());
 
         verify(borrowRecordService, times(1)).returnBook(1, 1);
@@ -144,7 +144,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     void returnBook_fail_bookId() throws Exception {
         when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
-                put("/borrow_records/{borrow_record}/book/{book_id}", 0, 1).with(csrf())
+                put("/borrow_records/{borrow_record}/books/{book_id}", 0, 1).with(csrf())
         ).andExpect(status().isBadRequest());
 
         verify(borrowRecordService, times(0)).returnBook(0, 1);
@@ -154,7 +154,7 @@ class BorrowRecordControllerTest extends ControllerTestBase {
     void returnBook_fail_borrowRecordId() throws Exception {
         when(borrowRecordService.returnBook(1, 1)).thenReturn(true);
         mockMvc.perform(
-                put("/borrow_records/{borrow_record}/book/{book_id}", 1, 0).with(csrf())
+                put("/borrow_records/{borrow_record}/books/{book_id}", 1, 0).with(csrf())
         ).andExpect(status().isBadRequest());
 
         verify(borrowRecordService, times(0)).returnBook(1, 0);

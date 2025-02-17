@@ -80,7 +80,7 @@ public class BorrowRecordController {
         }
     }
 
-    @PutMapping("/{borrow_record_id}/book/{book_id}")
+    @PutMapping("/{borrow_record_id}/books/{book_id}")
     public ResponseEntity<Void> returnBook(
             @PathVariable("borrow_record_id") @Positive int borrowRecordId,
             @PathVariable("book_id") @Positive int bookId
