@@ -2,6 +2,7 @@ package com.example.backend.infra.mapper;
 
 import com.example.backend.domain.entity.Book;
 import com.example.backend.domain.entity.BorrowRecord;
+import com.example.backend.domain.entity.Status;
 import com.example.backend.domain.entity.User;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -61,8 +62,9 @@ class BorrowRecordMapperTest {
 
     @Test
     void insertBorrowRecord() {
-        var newBook = new Book("Test Book");
+        var newBook = new Book(1, "Test Book", Status.AVAILABLE);
         var newUser = new User("Takashi", "takashi@gmail.com", "pw");
+        newUser.setEncodedPassword("password");
 
         bookMapper.insertBook(newBook);
         userMapper.insert(newUser);

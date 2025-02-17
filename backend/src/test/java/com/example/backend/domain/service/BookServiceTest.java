@@ -1,6 +1,7 @@
 package com.example.backend.domain.service;
 
 import com.example.backend.domain.entity.Book;
+import com.example.backend.domain.entity.Status;
 import com.example.backend.infra.mapper.BookMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,8 +27,8 @@ class BookServiceTest {
     @Mock
     private BookMapper mapper;
 
-    Book mockBook1 = new Book("book1");
-    Book mockBook2 = new Book("book2");
+    Book mockBook1 = new Book(1, "book1", Status.AVAILABLE);
+    Book mockBook2 = new Book(2, "book2", Status.AVAILABLE);
     List<Book> mockBooks = Arrays.asList(mockBook1, mockBook2);
 
     @Test
@@ -36,7 +37,7 @@ class BookServiceTest {
         List<Book> books = service.findAllBooks();
 
         assertEquals(mockBooks.size(), books.size());
-        assertEquals(mockBooks.get(0).title, books.get(0).title);
+        assertEquals(mockBooks.get(0).title(), books.get(0).title());
 
         verify(mapper, times(1)).findAllBooks();
     }
@@ -53,7 +54,7 @@ class BookServiceTest {
         when(mapper.findById(1)).thenReturn(mockBook1);
         var book = service.findById(1);
 
-        assertEquals(mockBook1.title, book.title);
+        assertEquals(mockBook1.title(), book.title());
 
         verify(mapper, times(1)).findById(1);
     }
@@ -72,7 +73,7 @@ class BookServiceTest {
         when(mapper.search(keyword)).thenReturn(Arrays.asList(mockBook1));
         var books = service.search(keyword);
 
-        assertEquals(mockBook1.title, books.get(0).title);
+        assertEquals(mockBook1.title(), books.get(0).title());
         verify(mapper, times(1)).search(keyword);
     }
 
