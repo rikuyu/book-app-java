@@ -51,7 +51,7 @@ const UserTable: React.FC = () => {
                     {menuOpen && (
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10">
                             <ul className="text-gray-800">
-                                <Link to="/book">
+                                <Link to="/books">
                                     <li className="hover:bg-gray-100 px-5 py-4 cursor-pointer">すべての書籍</li>
                                 </Link>
                                 <Link to="/popular">

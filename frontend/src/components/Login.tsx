@@ -26,7 +26,7 @@ function Login() {
                     throw new Error("Login failed");
                 }
                 console.log("Login Success");
-                navigate("/book");
+                navigate("/books");
             })
             .catch((error) => {
                 console.error(error);
