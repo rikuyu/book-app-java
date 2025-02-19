@@ -52,6 +52,12 @@ public class SecurityConfig {
                     .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/login", "/register").permitAll()
                             .requestMatchers("/session").hasRole("ADMIN")
+                            .requestMatchers(
+                                    "/swagger-ui/**",
+                                    "/v3/api-docs/**",
+                                    "/swagger-resources/**",
+                                    "/webjars/**"
+                            ).permitAll()
                             .anyRequest().authenticated()
                     );
         } else {
