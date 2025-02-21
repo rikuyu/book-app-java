@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -112,10 +113,17 @@ class BookControllerTest extends ControllerTestBase {
 
     @Test
     void deleteBookById_fail() throws Exception {
-        when(bookService.deleteById(1)).thenReturn(1);
         mockMvc.perform(delete("/books/{id}", 0).with(csrf()))
                 .andExpect(status().isBadRequest());
         verify(bookService, times(0)).deleteById(1);
+    }
+
+    @Test
+    void deleteBookById_notFound() throws Exception {
+        when(bookService.deleteById(100)).thenReturn(0);
+        mockMvc.perform(delete("/books/{id}", 100).with(csrf()))
+                .andExpect(status().isInternalServerError());
+        verify(bookService, times(1)).deleteById(100);
     }
 
     @Test
@@ -135,6 +143,16 @@ class BookControllerTest extends ControllerTestBase {
                                 ]
                                 """
                 ));
+        verify(bookService, times(1)).search(keyword);
+    }
+
+    @Test
+    void searchBooks_successNoResult() throws Exception {
+        var keyword = "nonexistent";
+        when(bookService.search(keyword)).thenReturn(Collections.emptyList());
+        mockMvc.perform(get("/books/search").param("keyword", keyword))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
         verify(bookService, times(1)).search(keyword);
     }
 
@@ -167,6 +185,15 @@ class BookControllerTest extends ControllerTestBase {
                         ]
                         """
                 ));
+        verify(bookService, times(1)).getPopularBooks();
+    }
+
+    @Test
+    void getPopularBooks_successEmpty() throws Exception {
+        when(bookService.getPopularBooks()).thenReturn(Collections.emptyList());
+        mockMvc.perform(get("/books/popular"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
         verify(bookService, times(1)).getPopularBooks();
     }
 }
