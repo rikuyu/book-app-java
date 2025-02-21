@@ -38,6 +38,7 @@ class UserMapperTest {
     @Test
     void insert() {
         User newUser = new User("Takashi", "takashi@gmail.com", "pw");
+        newUser.setEncodedPassword(newUser.getPassword());
         mapper.insert(newUser);
 
         List<User> users = mapper.findAllUsers();
