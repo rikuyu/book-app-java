@@ -24,10 +24,13 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: setup maven
+      - name: setup Maven
         uses: stCarolas/setup-maven@v4
         with:
-          maven-version: '3.5.2'
+          maven-version: '3.9.9'
+
+      - name: print Maven version
+        run: mvn -version
 
       - name: cache dependency
         uses: actions/cache@v3
