@@ -23,16 +23,16 @@ class UserMapperTest {
         var firstUser = users.get(0);
 
         assertEquals(3, users.size());
-        assertEquals(1, firstUser.id);
-        assertEquals("Sakura", firstUser.name);
+        assertEquals(1, firstUser.getId());
+        assertEquals("Sakura", firstUser.getUsername());
     }
 
     @Test
     void findById() {
         User user = mapper.findById(2);
 
-        assertEquals(2, user.id);
-        assertEquals("Kenta", user.name);
+        assertEquals(2, user.getId());
+        assertEquals("Kenta", user.getUsername());
     }
 
     @Test
@@ -43,7 +43,7 @@ class UserMapperTest {
 
         List<User> users = mapper.findAllUsers();
         assertEquals(4, users.size());
-        assertEquals(4, newUser.id);
+        assertEquals(4, newUser.getId());
     }
 
     @Test
@@ -54,6 +54,6 @@ class UserMapperTest {
         var firstUser = users.get(0);
 
         assertEquals(2, users.size());
-        assertEquals(2, firstUser.id);
+        assertEquals(2, firstUser.getId());
     }
 }

@@ -41,7 +41,7 @@ class UserServiceTest {
         List<User> users = service.findAllUsers();
 
         assertEquals(mockUsers.size(), users.size());
-        assertEquals(mockUser1.name, users.get(0).name);
+        assertEquals(mockUser1.getUsername(), users.get(0).getUsername());
 
         verify(mapper, times(1)).findAllUsers();
     }
@@ -51,8 +51,8 @@ class UserServiceTest {
         when(mapper.findById(1)).thenReturn(mockUser1);
         User user = service.findById(1);
 
-        assertEquals(mockUser1.name, user.name);
-        assertEquals(mockUser1.email, user.email);
+        assertEquals(mockUser1.getUsername(), user.getUsername());
+        assertEquals(mockUser1.getEmail(), user.getEmail());
 
         verify(mapper, times(1)).findById(1);
     }
