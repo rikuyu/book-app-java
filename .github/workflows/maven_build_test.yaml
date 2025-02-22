@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: chekout
+      - name: checkout
         uses: actions/checkout@v4
 
       - name: setup Java
@@ -38,4 +38,5 @@ jobs:
             maven-${{ runner.os }}-
 
       - name: Build & Unit Test
+        working-directory: backend/backend
         run: mvn clean test
