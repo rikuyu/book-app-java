@@ -38,5 +38,5 @@ jobs:
             maven-${{ runner.os }}-
 
       - name: Build & Unit Test
-        working-directory: backend/backend
+        working-directory: backend/
         run: mvn clean test
