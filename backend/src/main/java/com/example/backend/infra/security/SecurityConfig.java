@@ -47,6 +47,8 @@ public class SecurityConfig {
             http
                     .logout(logout -> logout
                             .logoutUrl("/logout")
+                            .invalidateHttpSession(true)
+                            .deleteCookies("JSESSIONID")
                             .logoutSuccessHandler((res, req, auth) -> req.setStatus(HttpServletResponse.SC_OK))
                     )
                     .authorizeHttpRequests(auth -> auth
