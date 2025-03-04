@@ -4,7 +4,7 @@
 |-------------------|---------------|-----------------|
 | Spring Boot       | React         | Github Actions  |
 | Spring Security   | Tailwind CSS  | Swagger         |
-| MyBatis           |               | Junit           |
+| MyBatis           | Vite          | Junit           |
 | MySQL             |               | Maven           |
 |                   |               | Docker          |
 
@@ -38,29 +38,29 @@ erDiagram
 
 ## ⛩ API
 ### 🍩 書籍系
-- `GET /book` ... 全ての本のリストを取得
-- `GET /book/{id}` ... 特定の本の詳細を取得
-- `POST /book` ... 新しい本を追加
-- `DELETE /book/{id}` ... 特定の本を削除
+- `GET /books` ... 全ての本のリストを取得
+- `GET /books/{id}` ... 特定の本の詳細を取得
+- `POST /books` ... 新しい本を追加
+- `DELETE /books/{id}` ... 特定の本を削除
 - `GET /books/popular` ... 人気ランキング
 - `GET /books/search?keyword="hoge"` ... 本の検索
 
 ### 🙎‍♂️ 会員系
-- `GET /user` ... 全ての利用者のリストを取得
-- `GET /user/{id}` ... 特定の利用者の詳細を取得
-- `POST /user` ... 新しい利用者を登録
-- `DELETE /user/{id}` ... 特定の利用者を削除
-- `POST /user/image` ... プロフィール写真のアップロード  
-- `GET /user/me` ... 認証済みの自分の情報取得
-- `DELETE /user/me` ... 認証済みの自分の情報取得
+- `GET /users` ... 全ての利用者のリストを取得
+- `GET /users/{id}` ... 特定の利用者の詳細を取得
+- `POST /users` ... 新しい利用者を登録
+- `DELETE /users/{id}` ... 特定の利用者を削除
+- `POST /users/image` ... プロフィール写真のアップロード  
+- `GET /users/me` ... 認証済みの自分の情報取得
+- `DELETE /users/me` ... 認証済みの自分の情報取得
 
 
 ### 📜 貸出記録系
-- `GET /borrow_record` ... 全ての貸出記録を取得
-- `GET /borrow_record/book` ... 全ての貸出記録を本で取得
-- `GET /borrow_record/user` ... 全ての貸出記録を利用者で取得
-- `POST /borrow_record` ... 貸出記録を追加（本の貸し出し）
-- `PUT /borrow_record/{borrow_record_id}/book/{book_id}` ... 貸出記録を更新（本の返却）
+- `GET /borrow_records` ... 全ての貸出記録を取得
+- `GET /borrow_records/books` ... 全ての貸出記録を本で取得
+- `GET /borrow_records/users` ... 全ての貸出記録を利用者で取得
+- `POST /borrow_records` ... 貸出記録を追加（本の貸し出し）
+- `PUT /borrow_records/{borrow_record_id}/books/{book_id}` ... 貸出記録を更新（本の返却）
 
 ### 🔐 認証系
 - `POST /register` ... 新規登録
