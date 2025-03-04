@@ -4,7 +4,7 @@
 |-------------------|---------------|-----------------|
 | Spring Boot       | React         | Github Actions  |
 | Spring Security   | Tailwind CSS  | Swagger         |
-| MyBatis           | Vite          | Junit           |
+| MyBatis           | Vite          | JUnit           |
 | MySQL             |               | Maven           |
 |                   |               | Docker          |
 
