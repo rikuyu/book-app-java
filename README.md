@@ -2,11 +2,11 @@
 ## 🔧 使用技術
 | 💚 Backend        | 💙 Frontend    | 💛 その他        |
 |-------------------|---------------|-----------------|
-| Spring Boot       | React         | Github Actions  |
-| Spring Security   | Tailwind CSS  | Swagger         |
-| MyBatis           | Vite          | JUnit           |
-| MySQL             |               | Maven           |
-|                   |               | Docker          |
+| Java              | React         | Github Actions  |
+| Spring Boot       | Tailwind CSS  | Swagger         |
+| Spring Security   | Vite          | JUnit           |
+| MyBatis           | React Router  | Maven           |
+| MySQL             | TypeScript    | Docker          |
 
 
 ## 🏚 ER図
